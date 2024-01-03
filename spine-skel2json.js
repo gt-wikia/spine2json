@@ -97,7 +97,7 @@ SkeletonBinary.prototype = {
         if(fixedNum){
             return +value.toFixed(fixedNum);
         }
-        return value
+        return value;
     },
     readBoolean: function () {
         return this.readByte() != 0;
@@ -252,12 +252,18 @@ SkeletonBinary.prototype = {
                 att.rotation = this.readFloat();
                 att.x = this.readFloat() * this.scale;
                 att.y = this.readFloat() * this.scale;
-                att.scaleX = this.readFloat(); // need patch!
-                att.scaleY = this.readFloat(); // need patch!
+                att.scaleX = this.readFloat();
+                att.scaleY = this.readFloat();
                 att.width = this.readFloat() * this.scale;
                 att.height = this.readFloat() * this.scale;
                 att.color = this.readColor();
-                // console.log(path, `scaled to x${this.scaleAtt}...`);
+                let findImage = this.atlas[0].data.find(v => {
+                    return v.file == att.path;
+                });
+                if(att.width != findImage.size[0] || att.height != findImage.size[1]){
+                    att.scaleX = +(att.scaleX * (att.width  / findImage.size[0])).toFixed(4);
+                    att.scaleY = +(att.scaleY * (att.height / findImage.size[1])).toFixed(4);
+                }
                 return att;
             case 'boundingbox':
                 console.log('skin att type 2 implement me');
