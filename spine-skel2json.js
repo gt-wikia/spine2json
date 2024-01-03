@@ -353,17 +353,20 @@ SkeletonBinary.prototype = {
                 let frameCount = input.readInt(true);
                 for (let frameIndex = 0; frameIndex < frameCount; frameIndex++) {
                     let frameData = {};
+                    
+                    let time = input.readFloat(4);
+                    if(time != 0){
+                        frameData.time = time;
+                    }
+                    
                     if(timelineType == 'ATTACHMENT'){
-                        console.log('not implemented SLOT_ATTACHMENT');
-                        process.exit();
+                        data.slots[slotName].attachment = [];
+                        frameData.name = input.readStringRef();
+                        data.slots[slotName].attachment.push(frameData);
                     }
                     if(timelineType == 'COLOR'){
                         data.slots[slotName].color = [];
                         
-                        let time = input.readFloat(4);
-                        if(time != 0){
-                            frameData.time = time;
-                        }
                         frameData.color = input.readColor();
                         if(frameIndex < frameCount-1){
                             let curveData = input.readCurve();
@@ -553,7 +556,7 @@ SkeletonBinary.prototype = {
         let draworder = input.readInt(true);
         if(draworder > 0){
             data.draworder = {};
-            console.log('not implemented Animation Event');
+            console.log('not implemented Animation Draw Order');
             process.exit();
         }
         
