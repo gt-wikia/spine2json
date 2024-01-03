@@ -611,6 +611,10 @@ SkeletonBinary.prototype = {
         let skeletonData = input.json.skeleton;
         skeletonData.hash = input.readString();
         skeletonData.spine = input.readString();
+        if(skeletonData.spine == '3.8.87'){
+            // revert skel version
+            skeletonData.spine = '3.8.75';
+        }
         skeletonData.x = input.readFloat();
         skeletonData.y = input.readFloat();
         skeletonData.width = input.readFloat();
