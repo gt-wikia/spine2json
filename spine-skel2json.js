@@ -9,6 +9,7 @@ const AttachmentType = ['region', 'boundingbox', 'mesh', 'linkedmesh', 'path', '
 // timelines
 const SlotTimelineType = ['ATTACHMENT', 'COLOR', 'TWO_COLOR'];
 const BoneTimelineType = ['ROTATE', 'TRANSLATE', 'SCALE', 'SHEAR'];
+const PathTimelineType = ['POSITION', 'SPACING', 'MIX'];
 
 // load
 function SkeletonBinary(buffer, atlas, scale){
@@ -348,15 +349,17 @@ SkeletonBinary.prototype = {
             let timelineCount = input.readInt(true);
             for (let ii = 0; ii < timelineCount; ii++) {
                 let timelineType = SlotTimelineType[input.readByte()];
+                
                 let frameCount = input.readInt(true);
-                if(timelineType == 'ATTACHMENT'){
-                    console.log('not implemented SLOT_ATTACHMENT');
-                    process.exit();
-                }
-                if(timelineType == 'COLOR'){
-                    data.slots[slotName].color = [];
-                    for (let frameIndex = 0; frameIndex < frameCount; frameIndex++) {
-                        let frameData = {};
+                for (let frameIndex = 0; frameIndex < frameCount; frameIndex++) {
+                    let frameData = {};
+                    if(timelineType == 'ATTACHMENT'){
+                        console.log('not implemented SLOT_ATTACHMENT');
+                        process.exit();
+                    }
+                    if(timelineType == 'COLOR'){
+                        data.slots[slotName].color = [];
+                        
                         let time = input.readFloat(4);
                         if(time != 0){
                             frameData.time = time;
@@ -366,12 +369,13 @@ SkeletonBinary.prototype = {
                             let curveData = input.readCurve();
                             Object.assign(frameData, curveData);
                         }
+                        
                         data.slots[slotName].color.push(frameData);
                     }
-                }
-                if(timelineType == 'TWO_COLOR'){
-                    console.log('not implemented SLOT_TWO_COLOR');
-                    process.exit();
+                    if(timelineType == 'TWO_COLOR'){
+                        console.log('not implemented SLOT_TWO_COLOR');
+                        process.exit();
+                    }
                 }
             }
         }
@@ -387,57 +391,50 @@ SkeletonBinary.prototype = {
             let timelineCount = input.readInt(true);
             for (let ii = 0; ii < timelineCount; ii++) {
                 let timelineType = BoneTimelineType[input.readByte()];
+                let timelineName = timelineType.toLowerCase();
+                data.bones[boneName][timelineName] = [];
+                
                 let frameCount = input.readInt(true);
-                if(timelineType == 'ROTATE'){
-                    data.bones[boneName].rotate = [];
-                    for (let frameIndex = 0; frameIndex < frameCount; frameIndex++) {
-                        let frameData = {};
-                        let time = input.readFloat(4);
-                        if(time != 0){
-                            frameData.time = time;
-                        }
-                        let angle = input.readFloat(4);
-                        if(angle != 0){
-                            frameData.angle = angle;
-                        }
-                        if(frameIndex < frameCount-1){
-                            let curveData = input.readCurve();
-                            Object.assign(frameData, curveData);
-                        }
-                        data.bones[boneName].rotate.push(frameData);
+                for (let frameIndex = 0; frameIndex < frameCount; frameIndex++) {
+                    let frameData = {};
+                    let time = input.readFloat(4);
+                    if(time != 0){
+                        frameData.time = time;
                     }
-                }
-                if(timelineType == 'TRANSLATE' || timelineType == 'SCALE' || timelineType == 'SHEAR'){
-                    data.bones[boneName][timelineType.toLowerCase()] = [];
-                    for (let frameIndex = 0; frameIndex < frameCount; frameIndex++) {
-                        let frameData = {};
-                        let time = input.readFloat(4);
-                        if(time != 0){
-                            frameData.time = time;
-                        }
-                        
-                        let x = input.readFloat(4);
-                        let y = input.readFloat(4);
-                        if(timelineType == 'TRANSLATE' && x != 0 || timelineType == 'SHEAR' && x != 0){
-                            frameData.x = x;
-                        }
-                        if(timelineType == 'TRANSLATE' && y != 0 || timelineType == 'SHEAR' && y != 0){
-                            frameData.y = y;
-                        }
-                        if(timelineType == 'SCALE' && x != 1){
-                            frameData.x = x;
-                        }
-                        if(timelineType == 'SCALE' && y != 1){
-                            frameData.y = y;
-                        }
-                        
-                        if(frameIndex < frameCount-1){
-                            let curveData = input.readCurve();
-                            Object.assign(frameData, curveData);
-                        }
-                        
-                        data.bones[boneName][timelineType.toLowerCase()].push(frameData);
+                    
+                    if(timelineType == 'ROTATE'){
+                            let angle = input.readFloat(4);
+                            if(angle != 0){
+                                frameData.angle = angle;
+                            }
+                            if(frameIndex < frameCount-1){
+                                let curveData = input.readCurve();
+                                Object.assign(frameData, curveData);
+                            }
+                            data.bones[boneName][timelineName].push(frameData);
                     }
+                    if(timelineType == 'TRANSLATE' || timelineType == 'SCALE' || timelineType == 'SHEAR'){
+                            let x = input.readFloat(4);
+                            let y = input.readFloat(4);
+                            if(timelineType == 'TRANSLATE' && x != 0 || timelineType == 'SHEAR' && x != 0){
+                                frameData.x = x;
+                            }
+                            if(timelineType == 'TRANSLATE' && y != 0 || timelineType == 'SHEAR' && y != 0){
+                                frameData.y = y;
+                            }
+                            if(timelineType == 'SCALE' && x != 1){
+                                frameData.x = x;
+                            }
+                            if(timelineType == 'SCALE' && y != 1){
+                                frameData.y = y;
+                            }
+                            
+                            if(frameIndex < frameCount-1){
+                                let curveData = input.readCurve();
+                                Object.assign(frameData, curveData);
+                            }
+                    }
+                    data.bones[boneName][timelineName].push(frameData);
                 }
             }
         }
@@ -459,8 +456,42 @@ SkeletonBinary.prototype = {
         let pathCount = input.readInt(true);
         if(pathCount > 0){
             data.path = {};
-            console.log('not implemented Animation Path');
-            process.exit();
+            for (let i = 0; i < pathCount; i++) {
+                let index = input.readInt(true);
+                let pathData = input.json.path[index];
+                data.path[pathData.name] = {};
+            
+                let timelineCount = input.readInt(true);
+                for (let ii = 0; ii < timelineCount; ii++) {
+                    let timelineType = PathTimelineType[input.readByte()];
+                    let timelineName = timelineType.toLowerCase();
+                    data.path[pathData.name][timelineName] = [];
+                    
+                    let frameCount = input.readInt(true);
+                    for(let frameIndex=0;frameIndex < frameCount;frameIndex++){
+                        let frameData = {};
+                        let time = input.readFloat(4);
+                        if(time != 0){
+                            frameData.time = time;
+                        }
+                        
+                        if(timelineType == 'POSITION' || timelineType == 'SPACING'){
+                            frameData[timelineName] = input.readFloat();
+                        }
+                        if(timelineType == 'MIX'){
+                            frameData[rotateMix] = input.readFloat();
+                            frameData[translateMix] = input.readFloat();
+                        }
+                        
+                        if(frameIndex < frameCount-1){
+                            let curveData = input.readCurve();
+                            Object.assign(frameData, curveData);
+                        }
+                        
+                        data.path[pathData.name][timelineName].push(frameData);
+                    }
+                }
+            }
         }
         
         // deforms also skins
@@ -482,35 +513,56 @@ SkeletonBinary.prototype = {
                 let timelineCount = input.readInt(true);
                 for (let iii = 0; iii < timelineCount; iii++) {
                     let attachmentName = input.readStringRef();
-                    let attachment = input.getAttachment(skinIndex, slotIndex, attachmentName);
                     data.deform[skinName][slotName][attachmentName] = [];
                     
-                    let weighted = attachment.bones != null;
-                    let vertices = attachment.vertices;
-                    let deformLength = weighted ? vertices.length / 3 * 2 : vertices.length;
                     let frameCount = input.readInt(true);
-                    
                     for (let frameIndex = 0; frameIndex < frameCount; frameIndex++) {
-                        let time = input.readFloat();
+                        let frameData = {};
+                        let time = input.readFloat(5);
+                        let end = input.readInt(true);
                         
-                        break;
+                        if(time != 0){
+                            frameData.time = time;
+                        }
+                        
+                        if(end != 0){
+                            let start = input.readInt(true);
+                            frameData.offset = start;
+                            frameData.vertices = [];
+                            
+                            end += start;
+                            for (let v = start; v < end; v++){
+                                frameData.vertices.push(input.readFloat() * this.scale);
+                            }
+                        }
+                        
+                        if (frameIndex < frameCount - 1){
+                            let curveData = input.readCurve();
+                            Object.assign(frameData, curveData);
+                        }
+                        
+                        data.deform[skinName][slotName][attachmentName].push(frameData);
                     }
                     
-                    break;
                 }
                 
-                break;
             }
             
-            break;
         }
         
-        // let eventCount = input.readInt(true);
-        // if(eventCount > 0){
-        //     data.events = {};
-        //     console.log('not implemented Animation Event');
-        //     process.exit();
-        // }
+        let draworder = input.readInt(true);
+        if(draworder > 0){
+            data.draworder = {};
+            console.log('not implemented Animation Event');
+            process.exit();
+        }
+        
+        let eventCount = input.readInt(true);
+        if(eventCount > 0){
+            data.events = {};
+            console.log('not implemented Animation Event');
+            process.exit();
+        }
         
         // console.log(data);
         return data;
@@ -735,7 +787,6 @@ SkeletonBinary.prototype = {
                 let animationName = input.readString();
                 let animationData = input.readAnimation(animationName);
                 input.json.animations[animationName] = animationData;
-                break;
             }
         }
         
