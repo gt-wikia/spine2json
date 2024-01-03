@@ -322,6 +322,16 @@ SkeletonBinary.prototype = {
         
         return null;
     },
+    getAttachment: function(skinIndex, slotIndex, attachmentName){
+        try{
+            let skin = this.json.skins[skinIndex];
+            let slot = skin.attachments[this.readSlotName(slotIndex)];
+            return slot[attachmentName];
+        }
+        catch(e){
+            return null;
+        }
+    },
     readAnimation: function(name){
         let input = this;
         let data = {};
@@ -460,53 +470,38 @@ SkeletonBinary.prototype = {
         }
         for (let i = 0; i < deformCount; i++) {
             let skinIndex = input.readInt(true);
-            let skinData = input.json.skins[skinIndex];
-            data.deform[skinData.name] = {};
+            let skinName = input.json.skins[skinIndex].name;
+            data.deform[skinName] = {};
             
             let slotCount = input.readInt(true);
             for (let ii = 0; ii < slotCount; ii++) {
-                var slotIndex = input.readInt(true);
-                let slotData = input.json.slots[slotIndex];
-                data.deform[skinData.name][slotData.name] = {};
+                let slotIndex = input.readInt(true);
+                let slotName = this.readSlotName(slotIndex);
+                data.deform[skinName][slotName] = {};
                 
                 let timelineCount = input.readInt(true);
                 for (let iii = 0; iii < timelineCount; iii++) {
-                    let attName = input.readStringRef();
-                    data.deform[skinData.name][slotData.name][attName] = [];
-                    //console.log(slotIndex, attName);
+                    let attachmentName = input.readStringRef();
+                    let attachment = input.getAttachment(skinIndex, slotIndex, attachmentName);
+                    data.deform[skinName][slotName][attachmentName] = [];
                     
+                    let weighted = attachment.bones != null;
+                    let vertices = attachment.vertices;
+                    let deformLength = weighted ? vertices.length / 3 * 2 : vertices.length;
                     let frameCount = input.readInt(true);
+                    
                     for (let frameIndex = 0; frameIndex < frameCount; frameIndex++) {
-                        let frameData = {};
-                        let time = input.readFloat(4);
-                        if(time != 0){
-                            frameData.time = time;
-                        }
+                        let time = input.readFloat();
                         
-                        let endVertex = input.readInt();
-                        if(endVertex != 0){
-                            let startVertex = input.readInt();
-                            frameData.offset = startVertex * 2;
-                            frameData.vertices = [];
-                            for(let v=0;v<endVertex;v++){
-                                frameData.vertices.push(input.readFloat());
-                                frameData.vertices.push(input.readFloat());
-                            }
-                        }
-                        
-                        if(frameIndex < frameCount-1){
-                            let curveData = input.readCurve();
-                            Object.assign(frameData, curveData);
-                        }
-                        
-                        data.deform[skinData.name][slotData.name][attName].push(frameData);
-                        //console.log(skinData.name, slotData.name, attName, frameIndex, frameData.vertices?.length);
                         break;
                     }
+                    
                     break;
                 }
+                
                 break;
             }
+            
             break;
         }
         
