@@ -1,1 +1,0 @@
-# spine2json
