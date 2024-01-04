@@ -631,6 +631,9 @@ SkeletonBinary.prototype = {
             skeletonData.audio = input.readString();
         }
         
+        // show skeleton data
+        console.log('LOG: Skeleton info:', skeletonData);
+        
         // init arrays
         let n = 0;
         let nn = 0;
