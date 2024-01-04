@@ -604,10 +604,6 @@ SkeletonBinary.prototype = {
         let skeletonData = input.json.skeleton;
         skeletonData.hash = input.readString();
         skeletonData.spine = input.readString();
-        if(skeletonData.spine == '3.8.87'){
-            // revert skel version
-            skeletonData.spine = '3.8.75';
-        }
         skeletonData.x = input.readFloat();
         skeletonData.y = input.readFloat();
         skeletonData.width = input.readFloat();
@@ -622,7 +618,7 @@ SkeletonBinary.prototype = {
         }
         
         // show skeleton data
-        console.log('LOG: Skeleton info:', skeletonData);
+        // console.log('LOG: Skeleton info:', skeletonData);
         
         // init arrays
         let n = 0;
@@ -799,12 +795,34 @@ const skel2json = (buffer, atlas, scale) => {
     return skelBin.json;
 };
 
-const json2patch = (data, atlas, fileName) => {
-    atlas = atlas[0];
+import fs from 'fs';
+const json2patch = (buffer, data, atlas, fileName) => {
+    const skelBin = new SkeletonBinary(buffer, atlas, 1);
+    skelBin.buildJson();
+    
     let input = JSON.parse(data);
-    // input.skeleton.images = `./images_${fileName}/`;
-    // input.skeleton.audio = '';
+    atlas = atlas[0];
+    
+    // revert back to original skeleton data from skel
+    input.skeleton = skelBin.json.skeleton;
+    
+    // show skeleton version
     console.log('LOG: Skeleton info:', input.skeleton);
+    
+    // remove spine version from json
+    if(input.skeleton.spine == '3.8.87'){
+        console.log(`LOG: Spine version removed from data`);
+        delete input.skeleton.spine;
+    }
+    
+    // patch images path
+    if (fs.existsSync('tspine.txt')) {
+        const targetDir = `./images_${fileName}/`;
+        input.skeleton.images = targetDir;
+        console.log(`LOG: Image dir changed to ${targetDir}`);
+    }
+    
+    // patch  attachment
     for(let s in input.skins){
         let atts = input.skins[s].attachments;
         for(let a in Object.keys(atts)){

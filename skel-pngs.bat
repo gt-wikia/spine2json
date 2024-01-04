@@ -18,6 +18,7 @@ echo pad_bottom = floor(pad_ih / 2)                                             
 echo pad_left = ceil(pad_iw / 2)                                                                                 >>./assets/%name%.avs
 echo i = i.AddBorders(pad_left, pad_top, pad_right, pad_bottom, color=$00000000)                                 >>./assets/%name%.avs
 
+rem Spline64Resize -> Spline36Resize -> BicubicResize
 echo iw = i.Width()                                                                                              >>./assets/%name%.avs
 echo ih = i.Height()                                                                                             >>./assets/%name%.avs
 echo i = i.Spline64Resize(iw/2, ih/2)                                                                            >>./assets/%name%.avs
