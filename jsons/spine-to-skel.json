@@ -1,0 +1,14 @@
+{
+"class": "export-binary",
+"name": "Binary",
+"project": null,
+"output": "./",
+"open": false,
+"extension": ".skel",
+"nonessential": true,
+"cleanUp": false,
+"packAtlas": null,
+"packSource": "attachments",
+"packTarget": "perskeleton",
+"warnings": true
+}
