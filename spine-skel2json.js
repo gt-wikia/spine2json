@@ -799,9 +799,11 @@ const skel2json = (buffer, atlas, scale) => {
     return skelBin.json;
 };
 
-const json2patch = (data, atlas, scale) => {
+const json2patch = (data, atlas, fileName) => {
     atlas = atlas[0];
     let input = JSON.parse(data);
+    // input.skeleton.images = `./images_${fileName}/`;
+    // input.skeleton.audio = '';
     console.log('LOG: Skeleton info:', input.skeleton);
     for(let s in input.skins){
         let atts = input.skins[s].attachments;

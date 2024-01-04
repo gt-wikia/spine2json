@@ -30,7 +30,7 @@ try{
     const atlasTxt = fs.readFileSync(filePrefix + fileName + '.atlas', 'utf8');
     
     const atlasJson = atlas(atlasTxt);
-    const skelPJson = json2patch(skelJson, atlasJson);
+    const skelPJson = json2patch(skelJson, atlasJson, fileName);
     
     fs.writeFileSync(filePrefix + fileName + '_j2p.json', JSON.stringify(skelPJson));
     console.log('LOG: DONE!');
