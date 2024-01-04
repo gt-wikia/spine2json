@@ -10,7 +10,7 @@ function help(){
     console.log('Usage:');
     console.log(' > node app skel_filename_in_assets_folder');
     console.log('e.g:');
-    console.log(' > node app admiral');
+    console.log(' > node app illust_admiral');
     process.exit();
 }
 
@@ -32,7 +32,7 @@ try{
     const atlasJson = atlas(atlasTxt);
     const skelJson = skel2json(skelBin, atlasJson, 1);
     
-    fs.writeFileSync(filePrefix + fileName + '_s2j.json', JSON.stringify(skelJson, null, '    '));
+    fs.writeFileSync(filePrefix + fileName + '_s2j.json', JSON.stringify(skelJson));
     console.log('LOG: DONE!');
 }
 catch(e){

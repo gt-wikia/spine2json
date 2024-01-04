@@ -1,12 +1,17 @@
 const atlas = (data) => {
     const pages = [];
     let page = {};
-    let pageData = {};
+    let pageData = null;
     let state = 0;
 
     for (const line of data.split('\n')) {
         if (line.trim().length === 0) {
             if (state > 0) {
+                if (pageData) {
+                    page.data.push(pageData);
+                    pageData = null;
+                }
+
                 pages.push(page);
             }
 
