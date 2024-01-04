@@ -355,9 +355,6 @@ SkeletonBinary.prototype = {
                     let frameData = {};
                     
                     let time = input.readFloat(4);
-                    if(time != 0){
-                        frameData.time = time;
-                    }
                     
                     if(timelineType == 'ATTACHMENT'){
                         data.slots[slotName].attachment = [];
@@ -401,9 +398,6 @@ SkeletonBinary.prototype = {
                 for (let frameIndex = 0; frameIndex < frameCount; frameIndex++) {
                     let frameData = {};
                     let time = input.readFloat(4);
-                    if(time != 0){
-                        frameData.time = time;
-                    }
                     
                     if(timelineType == 'ROTATE'){
                             let angle = input.readFloat(4);
@@ -523,10 +517,6 @@ SkeletonBinary.prototype = {
                         let frameData = {};
                         let time = input.readFloat(5);
                         let end = input.readInt(true);
-                        
-                        if(time != 0){
-                            frameData.time = time;
-                        }
                         
                         if(end != 0){
                             let start = input.readInt(true);
@@ -809,6 +799,40 @@ const skel2json = (buffer, atlas, scale) => {
     return skelBin.json;
 };
 
+const json2patch = (data, atlas, scale) => {
+    atlas = atlas[0];
+    let input = JSON.parse(data);
+    console.log('LOG: Skeleton info:', input.skeleton);
+    for(let s in input.skins){
+        let atts = input.skins[s].attachments;
+        for(let a in Object.keys(atts)){
+            let attItem = Object.keys(atts)[a];
+            let att = atts[attItem];
+            for(let a2 in Object.keys(att)){
+                let attName = Object.keys(att)[a2];
+                let attData = att[attName];
+                if(!attData.type || attData.type == 'region'){
+                    let findImage = atlas.data.find(v => {
+                        return v.file == attName;
+                    });
+                    if(attData.width != findImage.size[0] || attData.height != findImage.size[1]){
+                        if(!attData.scaleX){
+                            attData.scaleX = 1;
+                        }
+                        if(!attData.scaleY){
+                            attData.scaleY = 1;
+                        }
+                        attData.scaleX = +(attData.scaleX * (attData.width  / findImage.size[0])).toFixed(4);
+                        attData.scaleY = +(attData.scaleY * (attData.height / findImage.size[1])).toFixed(4);
+                    }
+                }
+            }
+        }
+    }
+    return input;
+};
+
 export {
-    skel2json
+    skel2json,
+    json2patch
 };
