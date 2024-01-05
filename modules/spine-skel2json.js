@@ -260,7 +260,7 @@ SkeletonBinary.prototype = {
                 if (path == null){
                     path = name;
                 }
-                att.path = path;
+                att.name = path;
                 att.rotation = this.readFloat();
                 att.x = this.readFloat() * this.scale;
                 att.y = this.readFloat() * this.scale;
@@ -270,7 +270,7 @@ SkeletonBinary.prototype = {
                 att.height = this.readFloat() * this.scale;
                 att.color = this.readColor();
                 let findImage = this.atlas[0].data.find(v => {
-                    return v.file == att.path;
+                    return v.file == att.name;
                 });
                 if(att.width != findImage.size[0] || att.height != findImage.size[1]){
                     att.scaleX = +(att.scaleX * (att.width  / findImage.size[0])).toFixed(4);
@@ -286,9 +286,9 @@ SkeletonBinary.prototype = {
             case 'mesh':
                 path = this.readStringRef();
                 if (path == null){
-                     path = name;
+                    path = name;
                 }
-                att.path = path;
+                att.name = path;
                 att.color = this.readColor();
                 n = this.readInt(true);
                 att.uvs = this.readFloatArray(n << 1, 1);
