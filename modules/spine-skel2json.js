@@ -96,12 +96,12 @@ SkeletonBinary.prototype = {
         return chars;
     },
     readFloat: function (fixedNum) {
+        if (typeof fixedNum === 'undefined') {
+            fixedNum = 8;
+        }
         var value = this.buffer.getFloat32(this.index);
         this.index += 4;
-        if(fixedNum){
-            return +value.toFixed(fixedNum);
-        }
-        return value;
+        return +value.toFixed(fixedNum);
     },
     readBoolean: function () {
         return this.readByte() != 0;
@@ -119,7 +119,7 @@ SkeletonBinary.prototype = {
             return this.readHex() + this.readHex() + this.readHex();
         }
         this.index += 3;
-        return undefined;
+        return null;
     },
     readFloatArray: function (length, scale) {
         let array = [];
@@ -513,7 +513,7 @@ SkeletonBinary.prototype = {
                     let frameCount = input.readInt(true);
                     for (let frameIndex = 0; frameIndex < frameCount; frameIndex++) {
                         let frameData = {};
-                        frameData.time = input.readFloat(5);
+                        frameData.time = input.readFloat(4);
                         
                         let end = input.readInt(true);
                         
@@ -726,7 +726,7 @@ SkeletonBinary.prototype = {
         // path constraints.
         n = input.readInt(true);
         if(n < 1){
-            input.json.path = undefined;
+            input.json.path = null;
         }
         for (let i = 0; i < n; i++) {
             let data = {};
