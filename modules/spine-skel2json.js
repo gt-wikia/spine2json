@@ -242,7 +242,7 @@ SkeletonBinary.prototype = {
     },
     readAttachment: function(attachmentName){
         let name = this.readStringRef();
-        if(name == null){
+        if(name === null){
             name = attachmentName;
         }
         
@@ -257,7 +257,7 @@ SkeletonBinary.prototype = {
         switch (att.type) {
             case 'region':
                 path = this.readStringRef();
-                if (path == null){
+                if (path === null){
                     path = name;
                 }
                 att.name = path;
@@ -285,7 +285,7 @@ SkeletonBinary.prototype = {
                 return att
             case 'mesh':
                 path = this.readStringRef();
-                if (path == null){
+                if (path === null){
                     path = name;
                 }
                 att.name = path;
@@ -654,7 +654,7 @@ SkeletonBinary.prototype = {
         // Slots
         n = input.readInt(true);
         if(n < 1){
-            input.json.slots = undefined;
+            input.json.slots = null;
         }
         for (let i = 0; i < n; i++) {
             let slotName = input.readString();
@@ -670,7 +670,7 @@ SkeletonBinary.prototype = {
         // ik constraints
         n = input.readInt(true);
         if(n < 1){
-            input.json.ik = undefined;
+            input.json.ik = null;
         }
         for (let i = 0; i < n; i++) {
             let data = {};
@@ -695,7 +695,7 @@ SkeletonBinary.prototype = {
         // transform constraints
         n = input.readInt(true);
         if(n < 1){
-            input.json.transform = undefined;
+            input.json.transform = null;
         }
         for (let i = 0; i < n; i++) {
             let data = {};
@@ -763,15 +763,21 @@ SkeletonBinary.prototype = {
         }
         
         // non-default skins
-        let skinCount = input.readInt(true);
-        for (let i = 0; i < skinCount; i++) {
-            console.log('implement non default skins!');
+        let skinsCount = input.readInt(true);
+        if(skinsCount < 1 && defaultSkin === null){
+            input.json.events = null;
+        }
+        for (let i = 0; i < skinsCount; i++) {
+            console.log('not implemented: non default skin!');
             process.exit();
         }
         
         let eventCount = input.readInt(true);
+        if(eventCount < 1){
+            input.json.events = null;
+        }
         for (let i = 0; i < eventCount; i++) {
-            console.log('implement events!');
+            console.log('not implemented: events');
             process.exit();
         }
         
