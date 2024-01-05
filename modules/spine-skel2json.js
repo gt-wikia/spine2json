@@ -345,7 +345,17 @@ SkeletonBinary.prototype = {
             let timelineCount = input.readInt(true);
             for (let timelineIndex = 0; timelineIndex < timelineCount; timelineIndex++) {
                 let timelineType = SlotTimelineType[input.readByte()];
-                data.slots[slotName][timelineType] = [];
+                
+                let timelineName;
+                switch(timelineType){
+                    case 'twoColor':
+                        timelineName = 'color';
+                        break;
+                    default:
+                        timelineName = timelineType;
+                }
+                
+                data.slots[slotName][timelineName] = [];
                 
                 let frameCount = input.readInt(true);
                 for (let frameIndex = 0; frameIndex < frameCount; frameIndex++) {
@@ -364,12 +374,19 @@ SkeletonBinary.prototype = {
                             }
                             break;
                         case 'twoColor':
-                            throw new Error('not implemented: animation slot twocolor!');
+                            throw new Error('not implemented: animation slot twoColor!');
+                            frameData.light = input.readColor();
+                            frameData.dark = input.readColor();
+                            if(frameIndex < frameCount-1){
+                                let curveData = input.readCurve();
+                                Object.assign(frameData, curveData);
+                            }
+                            break;
                         default:
                             throw new Error('not implemented: animation slot unknown type!');
                     }
                     
-                    data.slots[slotName][timelineType].push(frameData);
+                    data.slots[slotName][timelineName].push(frameData);
                 }
             }
         }
