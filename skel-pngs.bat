@@ -31,3 +31,5 @@ echo function pad_val(size) {                                                   
 echo     if (size %% 4 == 0)  { return 0 }                                                                       >>./assets/%name%.avs
 echo     return 4 - size %% 4                                                                                    >>./assets/%name%.avs
 echo }                                                                                                           >>./assets/%name%.avs
+
+pause

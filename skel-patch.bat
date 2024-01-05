@@ -8,3 +8,5 @@ node patch-json %name%
 "C:/Program Files/Spine/Spine.com" -i ./assets/%name%_j2p.json -o ./assets/ -e "%expCfg2%"
 del ".\assets\%name%.json"
 del ".\assets\%name%_j2p.json"
+
+pause
