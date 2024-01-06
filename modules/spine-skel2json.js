@@ -165,7 +165,7 @@ SkeletonBinary.prototype = {
     },
     readPathName: function (pathIndex) {
         pathIndex = !isNaN(pathIndex) ? pathIndex : this.readInt(true);
-        return this.json.slots[pathIndex].name;
+        return this.json.path[pathIndex].name;
     },
     readSkinName: function (skinIndex) {
         skinIndex = !isNaN(skinIndex) ? skinIndex : this.readInt(true);
