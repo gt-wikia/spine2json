@@ -654,7 +654,7 @@ SkeletonBinary.prototype = {
         // Slots
         n = input.readInt(true);
         if(n < 1){
-            input.json.slots = null;
+            input.json.slots = undefined;
         }
         for (let i = 0; i < n; i++) {
             let slotName = input.readString();
@@ -670,7 +670,7 @@ SkeletonBinary.prototype = {
         // ik constraints
         n = input.readInt(true);
         if(n < 1){
-            input.json.ik = null;
+            input.json.ik = undefined;
         }
         for (let i = 0; i < n; i++) {
             let data = {};
@@ -695,7 +695,7 @@ SkeletonBinary.prototype = {
         // transform constraints
         n = input.readInt(true);
         if(n < 1){
-            input.json.transform = null;
+            input.json.transform = undefined;
         }
         for (let i = 0; i < n; i++) {
             let data = {};
@@ -726,7 +726,7 @@ SkeletonBinary.prototype = {
         // path constraints.
         n = input.readInt(true);
         if(n < 1){
-            input.json.path = null;
+            input.json.path = undefined;
         }
         for (let i = 0; i < n; i++) {
             let data = {};
@@ -758,14 +758,14 @@ SkeletonBinary.prototype = {
         
         // default skin
         let defaultSkin = input.readSkin(true);
-        if (defaultSkin != null) {
+        if (defaultSkin !== null) {
             input.json.skins.push(defaultSkin);
         }
         
         // non-default skins
         let skinsCount = input.readInt(true);
         if(skinsCount < 1 && defaultSkin === null){
-            input.json.events = null;
+            input.json.skins = undefined;
         }
         for (let i = 0; i < skinsCount; i++) {
             console.log('not implemented: non default skin!');
@@ -774,7 +774,7 @@ SkeletonBinary.prototype = {
         
         let eventCount = input.readInt(true);
         if(eventCount < 1){
-            input.json.events = null;
+            input.json.events = undefined;
         }
         for (let i = 0; i < eventCount; i++) {
             console.log('not implemented: events');
