@@ -24,7 +24,13 @@ goto end
 set _output=./assets/images/
 if "%_TSPINE%" == "1" set _output=./assets/images_%_input_file%/
 
+node "%_PATCH_ATLAS%" "%_input_file%"
+set _atlas_illust=./assets/%_input_file%.pma.atlas
+
 "%_SPINE%" -u %_SV4% -i "./assets" -o "%_output%" -c "%_atlas_illust%"
+
+set _atlas_illust=%_atlas_illust:/=\%
+del "%_atlas_illust%"
 
 :end
 

@@ -1,6 +1,10 @@
 @echo off
+setlocal
 
-set name=%~n1
-node parse-skel %name%
+call config.bat
 
+set _input=%~n1
+node "%_PARSE_SKEL%" "%_input%"
+
+endlocal
 pause

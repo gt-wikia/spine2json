@@ -1,5 +1,6 @@
 import fs from 'fs';
 
+/*
 import { json2patch } from './modules/spine-skel2json.js';
 import { atlas } from './modules/spine-atlas.js';
 
@@ -7,11 +8,7 @@ const filePrefix = './assets/';
 const args = process.argv;
 const argc = args.length === 3 ? true : false;
 
-function help(){
-    console.log('Usage:');
-    console.log(' > node app json_filename_in_assets_folder');
-    console.log('e.g:');
-    console.log(' > node app illust_admiral');
+function exit(){
     process.exit();
 }
 
@@ -41,3 +38,4 @@ catch(e){
     console.log('LOG: Failed!');
     console.log(e);
 }
+*/
