@@ -4,7 +4,7 @@ setlocal
 call config.bat
 
 set _input=%~n1
-%_AR_APP% ".\assets\%_input%" -q > nul
+"%_AR_APP%" ".\assets\%_input%" -q > nul
 
 xcopy "%_AR_SRC%\Assets\" ".\assets\_temp\" /E /C /I /Y /Q > nul
 
