@@ -8,6 +8,7 @@ set _AR_SRC=%_AR_DIR%\Ripped\ExportedProject
 
 :: spine configs
 set _SCFG_FRAMES=./configs/spine-to-pngs.json
+set _SCFG_J2SKEL=./configs/spine-to-skel.json
 
 :: scripts
 set _PATCH_ATLAS=./scripts/patch-atlas-json.mjs
