@@ -13,6 +13,7 @@ set _SCFG_J2SKEL=./configs/spine-to-skel.json
 :: scripts
 set _PATCH_ATLAS=./scripts/patch-atlas-json.mjs
 set _PARSE_SKEL=./scripts/parse-spine-skel.mjs
+set _MAKE_FFMPEG=./scripts/make-enc.mjs
 
 :: set default spine verison
 :: SV3 is 3.x, SV4 is 4.x
