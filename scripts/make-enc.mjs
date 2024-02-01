@@ -13,11 +13,11 @@ function exit(){
 }
 
 if(argc && args[2].match(/\\/) || argc && args[2].match(/\//)){
-    help();
+    exit();
 }
 
 if(args.length < 2) {
-    help();
+    exit();
 }
 
 for(let i in vargs){

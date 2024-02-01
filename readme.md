@@ -1,11 +1,37 @@
-:: extract illust skel+atlas+png
-> skel-src-pma.bat admiral
+## Syntax
+:: extract illust skel+atlas+texture
+```cmd
+> skel-src.bat [<asset>] [<model>]?
+```
 
-:: make fixed skeleton
-> skel-parse.bat illust_admiral
+:: fix skeleton scaling
+```cmd
+> skel-parse.bat [<foldername>|<model>]
+```
 
-:: extract frames
-> skel-frames.bat illust_admiral
+:: export frames
+```cmd
+> skel-frames.bat [<foldername>|<model>]
+```
 
-:: gen bat for encoding
-> skel-anim.bat illust_admiral
+:: encode frames into `webm` video
+```cmd
+> skel-anim.bat [<foldername>|<model>]
+```
+
+## Examples
+### Singular Unity Asset
+```cmd
+skel-src.bat admiral
+skel-parse.bat admiral
+skel-frames.bat admiral
+skel-anim.bat admiral
+```
+
+### Compound Unity Asset
+```cmd
+skel-src.bat visual_novel novel_illust_kaden
+skel-parse.bat novel_illust_kaden
+skel-frames.bat novel_illust_kaden
+skel-anim.bat novel_illust_kaden
+```
