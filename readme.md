@@ -1,11 +1,19 @@
-:: extract illust skel+atlas+png
-> skel-src-pma.bat admiral
+:: extract illust skel+atlas+texture
+```cmd
+> skel-src.bat [<asset>] [<model>]?
+```
 
-:: make fixed skeleton
-> skel-parse.bat illust_admiral
+:: fix skeleton scaling
+```cmd
+> skel-parse.bat [<foldername>|<model>]
+```
 
-:: extract frames
-> skel-frames.bat illust_admiral
+:: export frames
+```cmd
+> skel-frames.bat [<foldername>|<model>]
+```
 
-:: gen bat for encoding
-> skel-anim.bat illust_admiral
+:: encode frames into `webm` video
+```cmd
+> skel-anim.bat [<foldername>|<model>]
+```
