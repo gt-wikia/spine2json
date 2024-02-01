@@ -1,7 +1,7 @@
 @echo off
 setlocal
 
-call config.bat
+call batconfigs.bat
 
 set _input=%~n1
 

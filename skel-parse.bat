@@ -1,7 +1,7 @@
 @echo off
 setlocal
 
-call config.bat
+call batconfigs.bat
 
 set _input=%~n1
 node "%_PARSE_SKEL%" "%_input%"

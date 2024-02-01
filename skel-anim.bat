@@ -1,7 +1,7 @@
 @echo off
 setlocal
 
-call config.bat
+call batconfigs.bat
 
 set _input=%~n1
 set _input_skel=./assets/%_input%.skel

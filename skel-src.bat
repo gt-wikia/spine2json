@@ -1,7 +1,7 @@
 @echo off
 setlocal
 
-call config.bat
+call batconfigs.bat
 
 set _input=%~n1
 "%_AR_APP%" ".\assets\%_input%" -q > nul
