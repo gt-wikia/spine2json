@@ -14,11 +14,11 @@ function exit(){
 }
 
 if(argc && args[2].match(/\\/) || argc && args[2].match(/\//)){
-    help();
+    exit();
 }
 
 if(args.length !== 3) {
-    help();
+    exit();
 }
 
 try{
