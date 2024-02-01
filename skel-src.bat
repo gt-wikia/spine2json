@@ -21,10 +21,33 @@ goto end
 
 :unpack
 
-set _output=./assets/images/
-if "%_TSPINE%" == "1" set _output=./assets/images_%_input_file%/
+set _output=%_WORK_DIR%/images/
+if "%_TSPINE%" == "1" set _output=%_WORK_DIR%/images_%_input_file%/
 
-"%_SPINE%" -u %_SV4% -i "./assets" -o "%_output%" -c "%_atlas_illust%"
+if "%_UPMA%" NEQ "1" set "_SV=%_SV3%" & goto unpack-UPMA
+if defined _SV4 goto Spine
+goto FFmpeg
+
+:Spine
+set _SV=%_SV4%
+set _pma_atlas=%_WORK_DIR%/%_input_file%.pma.atlas
+node "%_PATCH_ATLAS%" "%_WORK_DIR%/%_input_file%"
+set _atlas_illust=%_pma_atlas%
+goto unpack-UPMA
+
+:FFmpeg
+set _SV=%_SV3%
+set _pma_texture=%_WORK_DIR%/%_input_file%.pma.png
+ren "%_texture_illust:/=\%" "%_input_file%.pma.png"
+ffmpeg -hide_banner -loglevel error -i "%_pma_texture%" -vf ^"geq= ^
+    r='min(r(X,Y)/alpha(X,Y)*255, 255)': ^
+    g='min(g(X,Y)/alpha(X,Y)*255, 255)': ^
+    b='min(b(X,Y)/alpha(X,Y)*255, 255)': ^
+    a='alpha(X,Y)'" -y -update 1 "%_texture_illust%"
+
+:unpack-UPMA
+"%_SPINE%" -u %_SV% -i "%_WORK_DIR%" -o "%_output%" -c "%_atlas_illust%"
+
 
 :end
 
