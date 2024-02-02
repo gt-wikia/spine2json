@@ -13,7 +13,7 @@ set _patch_json=%_WORK_DIR%\%_input_file%.s2j.json
 set _patch_skel=%_WORK_DIR%\%_input_file%.s2j.skel
 
 set _frames_dir=frames
-if "%_TSPINE%" == "1" set _frames_dir=frames_%_input_file%
+if "%_TSPINE%" == "1" set _frames_dir=frames_%_input%
 
 if not exist "%_patch_json%" echo LOG: %_patch_json% not found. Use skel-parse.bat & goto end
 
