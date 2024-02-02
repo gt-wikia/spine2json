@@ -2,7 +2,9 @@ import fs from 'fs';
 
 import { atlas } from './spine-atlas.mjs';
 
-const filePrefix = './assets/';
+const WORK_DIR = process.env._WORK_DIR.replace(/\\/g, '/');
+const filePrefix = `${WORK_DIR}/`;
+
 const args = process.argv;
 const argc = args.length === 3 ? true : false;
 
