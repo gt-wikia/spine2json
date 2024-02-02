@@ -32,7 +32,7 @@ try{
     const skelJson = skel2json(skelBin, atlasJson, 1);
     
     if(process.env._TSPINE == 1){
-        skelJson.skeleton.images = `./images_${fileName}/`;
+        skelJson.skeleton.images = `./images_${process.env._input}/`;
     }
     
     fs.writeFileSync(filePrefix + fileName + '.s2j.json', JSON.stringify(skelJson, null, '	'));

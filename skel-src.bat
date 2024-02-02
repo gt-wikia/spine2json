@@ -41,7 +41,7 @@ goto end
 :unpack
 
 set _output=%_WORK_DIR%/images/
-if "%_TSPINE%" == "1" set _output=%_WORK_DIR%/images_%_input_file%/
+if "%_TSPINE%" == "1" set _output=%_WORK_DIR%/images_%_input%/
 
 if "%_UPMA%" NEQ "1" set "_SV=%_SV3%" & goto unpack-UPMA
 if defined _SV4 goto Spine

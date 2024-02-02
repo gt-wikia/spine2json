@@ -11,7 +11,7 @@ if "%_XDIR%" == "1" set "_WORK_DIR=%_WORK_DIR%\%_input%"
 if not exist "%_WORK_DIR%\%_input_file%.skel" set _input_file=%_input%
 
 set _frames_dir=frames
-if "%_TSPINE%" == "1" set _frames_dir=frames_%_input_file%
+if "%_TSPINE%" == "1" set _frames_dir=frames_%_input%
 
 for /f %%A in ('dir /a:-d /s /b "%_WORK_DIR%/%_frames_dir%/" ^| find /c "\%_input%-idle"') do set _last_frame=%%A
 if "%_last_frame%" == "0" echo LOG: No frames found inside %_WORK_DIR%\%_frames_dir% & goto end
@@ -58,7 +58,6 @@ exit /b
 :write-global-avs
   set _avs_Gpath="%_avs_Gpath:\=/%/"
   if "%_XDIR%" == "1" (set _avs_Gpath=%_avs_Gpath%+name)
-
   if "%_TSPINE%" == "1" (set _avs_Gpath=%_avs_Gpath%+"/frames_"+name+"/") ^
     else (set _avs_Gpath=%_avs_Gpath%+"/frames/")
   echo #name = "%_input%"
