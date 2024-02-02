@@ -2,9 +2,6 @@ import fs from 'fs';
 
 import { atlas } from './spine-atlas.mjs';
 
-const WORK_DIR = process.env._WORK_DIR.replace(/\\/g, '/');
-const filePrefix = `${WORK_DIR}/`;
-
 const args = process.argv;
 const argc = args.length === 3 ? true : false;
 
@@ -13,6 +10,11 @@ function exit(){
     console.log(args);
     process.exit();
 }
+
+args[2] = args[2].replace(/\\/g, '/');
+const WORK_DIR = args[2].split('/').splice(-1).join('/');
+const filePrefix = `./assets/${WORK_DIR == '' ? '' : WORK_DIR + '/'}`;
+args[2] = args[2].split('/').reverse()[0];
 
 if(argc && args[2].match(/\\/) || argc && args[2].match(/\//)){
     exit();
