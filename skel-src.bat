@@ -58,11 +58,13 @@ goto unpack-UPMA
 set _SV=%_SV3%
 set _pma_texture=%_WORK_DIR%/%_input_file%.pma.png
 ren "%_texture_illust:/=\%" "%_input_file%.pma.png"
-ffmpeg -hide_banner -loglevel error -i "%_pma_texture%" -vf ^"geq= ^
+echo LOG: Input file: %_WORK_DIR%\%_input_file%
+ffmpeg -loglevel error -i "%_pma_texture%" -vf ^"geq= ^
     r='min(r(X,Y)/alpha(X,Y)*255, 255)': ^
     g='min(g(X,Y)/alpha(X,Y)*255, 255)': ^
     b='min(b(X,Y)/alpha(X,Y)*255, 255)': ^
-    a='alpha(X,Y)'" -y -update 1 "%_texture_illust%"
+    a='alpha(X,Y)'" -y "%_texture_illust%"
+if exist "%_texture_illust%" (echo LOG: DONE!) else goto end
 
 :unpack-UPMA
 "%_SPINE%" -u %_SV% -i "%_WORK_DIR%" -o "%_output%" -c "%_atlas_illust%"
