@@ -11,7 +11,7 @@ function exit(){
     process.exit();
 }
 
-args[2] = args[2].replace(/\\/g, '/').replace(/\.atlas$/, '')
+args[2] = args[2].replace(/\\/g, '/').replace(/\.atlas$/, '');
 const WORK_DIR = args[2].split('/').slice(0, -1).join('/');
 const filePrefix = WORK_DIR != '' ? WORK_DIR + '/' : './assets/';
 args[2] = args[2].split('/').reverse()[0];
