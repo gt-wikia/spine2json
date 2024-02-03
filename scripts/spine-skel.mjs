@@ -346,6 +346,7 @@ SkeletonBinary.prototype = {
                 let timelineName;
                 switch(timelineType){
                     case 'twoColor':
+                        throw new Error('not implemented: animation slot twoColor!');
                         timelineName = 'color';
                         break;
                     default:
@@ -539,10 +540,22 @@ SkeletonBinary.prototype = {
             
         }
         
-        let draworder = input.readInt(true);
-        if(draworder > 0){
-            data.draworder = {};
-            throw new Error('not implemented: animation draw order');
+        let draworderCount = input.readInt(true);
+        if(draworderCount > 0){
+            data.draworder = [];
+            for(let i=0; i < draworderCount; i++){
+                const draworder = {};
+                draworder.time = input.readFloat();
+                draworder.offsets = [];
+                let changeCount = input.readInt(true);
+                for(let changeIndex=0; changeIndex < changeCount; changeIndex++){
+                    const draworderOffset = {};
+                    draworderOffset.slot = input.readSlotName();
+                    draworderOffset.offset = input.readInt(true);
+                    draworder.offsets.push(draworderOffset);
+                }
+                data.draworder.push(draworder);
+            }
         }
         
         let eventCount = input.readInt(true);
@@ -757,8 +770,7 @@ SkeletonBinary.prototype = {
             input.json.skins = undefined;
         }
         for (let i = 0; i < skinsCount; i++) {
-            console.log('not implemented: non default skin!');
-            process.exit();
+            throw new Error('not implemented: non default skin!');
         }
         
         let eventCount = input.readInt(true);
@@ -766,8 +778,7 @@ SkeletonBinary.prototype = {
             input.json.events = undefined;
         }
         for (let i = 0; i < eventCount; i++) {
-            console.log('not implemented: events');
-            process.exit();
+            throw new Error('not implemented: events');
         }
         
         let animationCount = input.readInt(true);
