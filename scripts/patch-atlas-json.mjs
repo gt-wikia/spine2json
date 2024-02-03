@@ -2,9 +2,9 @@ import fs from 'fs';
 
 import { atlas } from './spine-atlas.mjs';
 
-const filePrefix = './assets/';
 const args = process.argv;
 const argc = args.length === 3 ? true : false;
+args[2] = args[2].replace(/\\/g, '/').replace(/\.atlas$/, '');
 
 function exit(){
     console.log('[APP] Wrong args');
@@ -13,7 +13,7 @@ function exit(){
 }
 
 if(argc && args[2].match(/\\/) || argc && args[2].match(/\//)){
-    exit();
+    // exit();
 }
 
 if(args.length !== 3) {
@@ -21,8 +21,12 @@ if(args.length !== 3) {
 }
 
 try{
-    const fileName = args[2];
+    const filePath = args[2].split('/');
+    const fileName = filePath.pop();
+    const filePrefix = filePath.length == 0 ? '' : filePath.join('/') + '/';
+
     console.log('LOG: Input file:', filePrefix + fileName);
+
     const atlasTxt = fs.readFileSync(filePrefix + fileName + '.atlas', 'utf8');
     const atlasData = atlas(atlasTxt);
     
