@@ -13,8 +13,8 @@ function exit(){
 }
 
 args[2] = args[2].replace(/\\/g, '/');
-const WORK_DIR = args[2].split('/').splice(-1).join('/');
-const filePrefix = `./assets/${WORK_DIR == '' ? '' : WORK_DIR + '/'}`;
+const WORK_DIR = args[2].split('/').slice(0, -1).join('/');
+const filePrefix = WORK_DIR != '' ? WORK_DIR + '/' : './assets/';
 args[2] = args[2].split('/').reverse()[0];
 
 if(argc && args[2].match(/\\/) || argc && args[2].match(/\//)){
