@@ -3,9 +3,6 @@ import fs from 'fs';
 import { skel2json } from './spine-skel.mjs';
 import { atlas } from './spine-atlas.mjs';
 
-const WORK_DIR = process.env._WORK_DIR.replace(/\\/g, '/');
-const filePrefix = `${WORK_DIR}/`;
-
 const args = process.argv;
 const argc = args.length === 3 ? true : false;
 
@@ -14,6 +11,11 @@ function exit(){
     console.log(args);
     process.exit();
 }
+
+args[2] = args[2].replace(/\\/g, '/').replace(/\.skel$/, '');
+const WORK_DIR = args[2].split('/').slice(0, -1).join('/');
+const filePrefix = WORK_DIR != '' ? WORK_DIR + '/' : './assets/';
+args[2] = args[2].split('/').reverse()[0];
 
 if(argc && args[2].match(/\\/) || argc && args[2].match(/\//)){
     exit();

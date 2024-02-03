@@ -50,7 +50,7 @@ goto FFmpeg
 :Spine
 set _SV=%_SV4%
 set _pma_atlas=%_WORK_DIR%/%_input_file%.pma.atlas
-node "%_PATCH_ATLAS%" "%_input_file%"
+node "%_PATCH_ATLAS%" "%_WORK_DIR%/%_input_file%"
 set _atlas_illust=%_pma_atlas%
 goto unpack-UPMA
 
