@@ -39,7 +39,7 @@ try{
         skelJson.skeleton.images = `./images_${process.env._input}/`;
     }
     
-    fs.writeFileSync(filePrefix + fileName + '.s2j.json', JSON.stringify(skelJson, null, '	'));
+    fs.writeFileSync(filePrefix + fileName + '.s2j.json', JSON.stringify(skelJson, null, '\t'));
     console.log('LOG: DONE!');
 }
 catch(e){

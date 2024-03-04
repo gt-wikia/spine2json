@@ -394,7 +394,7 @@ SkeletonBinary.prototype = {
             data.bones = {};
         }
         for (let i = 0; i < boneCount; i++) {
-            let boneName = input.readBoneName();;
+            let boneName = input.readBoneName();
             data.bones[boneName] = {};
             
             let timelineCount = input.readInt(true);

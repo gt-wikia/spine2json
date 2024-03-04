@@ -60,6 +60,7 @@ exit /b
     else (set _avs_Gpath=%_avs_Gpath%+"/frames/")
   echo #name = "%_input%"
   echo #frames = %_last_frame%
+  echo.
   echo src = %_avs_Gpath%+name+"-idle_%%0"+String(StrLen(String(frames)))+"d.png"
   echo i = ImageSource(src, start=0, end=frames, fps=18, pixel_type="RGB32")
   echo pt = VarExist("pt") ? pt : 20
