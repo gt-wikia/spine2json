@@ -40,12 +40,10 @@ echo LOG: Successfully created: %_local_avs:\=/%
 echo LOG: Proceeding with FFmpeg encoding...
 
 pause
-echo ffmpeg -hide_banner -i %_local_avs% -c:v libvpx-vp9 -an ^
- -b:v 0 -crf 25 -row-mt 1 -tile-columns 2 -threads 4 -deadline best ^
- -y "%_WORK_DIR%\%_input_file%.webm" > .make-ffmpeg_temp.bat
 
-start /belownormal /b /w cmd /C ".make-ffmpeg_temp.bat"
-del ".make-ffmpeg_temp.bat"
+start /belownormal /b /w ffmpeg -hide_banner -i %_local_avs% -c:v libvpx-vp9 -an ^
+ -b:v 0 -crf 25 -row-mt 1 -tile-columns 2 -threads 4 -deadline best ^
+ -y "%_WORK_DIR%\%_input_file%.webm"
 
 set _output=%_WORK_DIR%\%_input_file%.webm
 if exist "%_output%" "%_output%"
