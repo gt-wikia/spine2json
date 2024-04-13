@@ -320,7 +320,13 @@ SkeletonBinary.prototype = {
                 throw new Error('not implemented: skin attachment point');
                 return att;
             case 'clipping':
-                throw new Error('not implemented: skin attachment clipping');
+                att.end = this.readSlotName();
+                n = this.readInt(true);
+                att.vertexCount = n;
+                att.vertices = this.readVertices(n);
+                if (this.nonessential) {
+                    att.color = this.readColor();
+                }
                 return att;
             default:
                 return att;
