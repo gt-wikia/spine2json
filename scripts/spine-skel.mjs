@@ -160,6 +160,10 @@ SkeletonBinary.prototype = {
         slotIndex = !isNaN(slotIndex) ? slotIndex : this.readInt(true);
         return this.json.slots[slotIndex].name;
     },
+    readIKName: function (ikIndex) {
+        ikIndex = !isNaN(ikIndex) ? ikIndex : this.readInt(true);
+        return this.json.ik[ikIndex].name;
+    },
     readPathName: function (pathIndex) {
         pathIndex = !isNaN(pathIndex) ? pathIndex : this.readInt(true);
         return this.json.path[pathIndex].name;
@@ -443,7 +447,28 @@ SkeletonBinary.prototype = {
         let ikCount = input.readInt(true);
         if(ikCount > 0){
             data.ik = {};
-            throw new Error('not implemented: animation ik');
+        }
+        for (let i = 0; i < ikCount; i++) {
+            const ikName = input.readIKName();
+            data.ik[ikName] = [];
+            
+            const frameCount = input.readInt(true);
+            for (let frameIndex = 0; frameIndex < frameCount; frameIndex++) {
+                let frameData = {};
+                frameData.time = input.readFloat();
+                frameData.mix = input.readFloat();
+                frameData.softness = input.readFloat() * input.scale;
+                frameData.bendPositive = input.readByte() > 0 ? true : false;
+                frameData.compress = input.readBoolean();
+                frameData.stretch = input.readBoolean();
+                
+                if (frameIndex < frameCount - 1) {
+                    let curveData = input.readCurve();
+                    Object.assign(frameData, curveData);
+                }
+                
+                data.ik[ikName].push(frameData);
+            }
         }
         
         let transformCount = input.readInt(true);
