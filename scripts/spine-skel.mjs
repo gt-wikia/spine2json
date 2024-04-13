@@ -164,6 +164,10 @@ SkeletonBinary.prototype = {
         ikIndex = !isNaN(ikIndex) ? ikIndex : this.readInt(true);
         return this.json.ik[ikIndex].name;
     },
+    readTransformName: function (transformIndex) {
+        transformIndex = !isNaN(transformIndex) ? transformIndex : this.readInt(true);
+        return this.json.transform[transformIndex].name;
+    },
     readPathName: function (pathIndex) {
         pathIndex = !isNaN(pathIndex) ? pathIndex : this.readInt(true);
         return this.json.path[pathIndex].name;
@@ -474,7 +478,25 @@ SkeletonBinary.prototype = {
         let transformCount = input.readInt(true);
         if(transformCount > 0){
             data.transform = {};
-            throw new Error('not implemented: animation transform');
+        }
+        for (let i = 0; i < transformCount; i++) {
+            const tfName = input.readTransformName();
+            data.transform[tfName] = [];
+            
+            const frameCount = input.readInt(true);
+            for (let frameIndex = 0; frameIndex < frameCount; frameIndex++){
+                let frameData = {};
+                frameData.time = input.readFloat();
+                frameData.rotateMix = input.readFloat();
+                frameData.translateMix = input.readFloat();
+                frameData.scaleMix = input.readFloat();
+                frameData.shearMix = input.readFloat();
+                if (frameIndex < frameCount - 1) {
+                    let curveData = input.readCurve();
+                    Object.assign(frameData, curveData);
+                }
+                data.transform[tfName].push(frameData);
+            }
         }
         
         let pathCount = input.readInt(true);
