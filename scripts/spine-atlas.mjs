@@ -64,7 +64,6 @@ Atlas.prototype.parse = (data) => {
 
 Atlas.prototype.stringify = (pages) => {
 	let data = '';
-	let pageData = '';
 
 	for (const page of pages) {
 		// default property preset
@@ -89,6 +88,7 @@ Atlas.prototype.stringify = (pages) => {
 		};
 
 		// stringify spritesheet
+		let pageData = '';
 		for (const sprite of page.data) {
 			for (const optName of Object.keys(sprite)) {
 				if (optName === 'file') {
