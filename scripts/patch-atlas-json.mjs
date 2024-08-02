@@ -28,30 +28,14 @@ try{
     const fileName = args[2];
     console.log('LOG: Input file:', filePrefix + fileName);
     const atlasTxt = fs.readFileSync(filePrefix + fileName + '.atlas', 'utf8');
-    const atlasData = atlas(atlasTxt);
+    const atlasData = atlas.parse(atlasTxt);
     
     if(atlasData.length > 0){
-        const atlasPage = atlasData[0];
-        let atlasPagePMA = `\n${atlasPage.file}\n`;
-        
-        for(let k of Object.keys(atlasPage)){
-            if(k != 'file' && k != 'data'){
-                atlasPagePMA += `${k}: ${atlasPage[k]}\n`;
-            }
-        }
-        
-        atlasPagePMA += `pma: true\n`;
-        
-        for(let i of atlasPage.data){
-            for(let v of Object.keys(i)){
-                if(v == 'file'){
-                    atlasPagePMA += `${i[v]}\n`;
-                }
-                else{
-                    atlasPagePMA += `  ${v}: ${i[v].join(', ')}\n`;
-                }
-            }
-        }
+		for (const atlasPage of atlasData) {
+			atlasPage.pma = true;
+		}
+		
+		const atlasPagePMA = atlas.stringify(atlasData);
         
         fs.writeFileSync(filePrefix + fileName + '.pma.atlas', atlasPagePMA);
         

@@ -32,7 +32,7 @@ try{
     const skelBin  = fs.readFileSync(filePrefix + fileName + '.skel');
     const atlasTxt = fs.readFileSync(filePrefix + fileName + '.atlas', 'utf8');
     
-    const atlasJson = atlas(atlasTxt);
+    const atlasJson = atlas.parse(atlasTxt);
     const skelJson = skel2json(skelBin, atlasJson, 1);
     
     if(process.env._TSPINE == 1){

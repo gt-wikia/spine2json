@@ -1,4 +1,6 @@
-const atlas = (data) => {
+function Atlas() {};
+
+Atlas.prototype.parse = (data) => {
     const pages = [];
     let page = {};
     let pageData = null;
@@ -59,6 +61,51 @@ const atlas = (data) => {
 
     return pages;
 };
+
+Atlas.prototype.stringify = (pages) => {
+	let data = '';
+	let pageData = '';
+
+	for (const page of pages) {
+		// default property preset
+		// used to retain correct prop ordering, and filtering newly added props
+		const optNames = ['file', 'size', 'format', 'filter', 'repeat', 'data'];
+		const allOpts = Object.keys(page);
+		const newOpts = allOpts.filter(opt => !optNames.includes(opt));
+
+		// exclude specials from iteration
+		optNames.shift();
+		optNames.pop();
+
+		// append newly added options
+		for (const opt of newOpts) {
+			optNames.push(opt);
+		}
+
+		// stringify metadata
+		data += `\n${page.file}\n`;
+		for (const opt of optNames) {
+			data += `${opt}: ${page[opt]}\n`;
+		};
+
+		// stringify spritesheet
+		for (const sprite of page.data) {
+			for (const optName of Object.keys(sprite)) {
+				if (optName === 'file') {
+					pageData += `${sprite[optName]}\n`;
+					continue;
+				}
+				pageData += `  ${optName}: ${sprite[optName]}\n`;
+			}
+		};
+
+		data += pageData;
+	}
+
+	return data;
+}
+
+const atlas = new Atlas();
 
 export {
     atlas
