@@ -255,7 +255,7 @@ SkeletonBinary.prototype = {
         let array;
         
         const att = {
-            name: name,
+            path: name,
             type: AttachmentType[this.readByte()],
         };
         
@@ -265,7 +265,7 @@ SkeletonBinary.prototype = {
                 if (path === null){
                     path = name;
                 }
-                att.name = path;
+                att.path = path;
                 att.rotation = this.readFloat();
                 att.x = this.readFloat() * this.scale;
                 att.y = this.readFloat() * this.scale;
@@ -275,7 +275,7 @@ SkeletonBinary.prototype = {
                 att.height = this.readFloat() * this.scale;
                 att.color = this.readColor();
                 let findImage = this.atlas[0].data.find(v => {
-                    return v.name == att.name;
+                    return v.name == att.path;
                 });
                 if(att.width != findImage.size[0] || att.height != findImage.size[1]){
                     att.scaleX = +(att.scaleX * (att.width  / findImage.size[0])).toFixed(4);
