@@ -37,7 +37,7 @@ Atlas.prototype.parse = (data) => {
                     page[optName.trim()] = optVal.split(',').map(x => x.trim())
                 } else {
                     pageData = {
-                        file: line.trim(),
+                        name: line.trim(),
                     };
 
                     state = 2;
@@ -51,7 +51,7 @@ Atlas.prototype.parse = (data) => {
                 } else {
                     page.data.push(pageData);
                     pageData = {
-                        file: line.trim(),
+                        name: line.trim(),
                     };
                 }
 
@@ -91,7 +91,7 @@ Atlas.prototype.stringify = (pages) => {
 		let pageData = '';
 		for (const sprite of page.data) {
 			for (const optName of Object.keys(sprite)) {
-				if (optName === 'file') {
+				if (optName === 'name') {
 					pageData += `${sprite[optName]}\n`;
 					continue;
 				}

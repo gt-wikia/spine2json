@@ -25,7 +25,7 @@ const json2patch = (buffer, data, atlas) => {
                 let attData = att[attName];
                 if(!attData.type || attData.type == 'region'){
                     let findImage = atlas.data.find(v => {
-                        return v.file == attName;
+                        return v.name == attName;
                     });
                     if(attData.width != findImage.size[0] || attData.height != findImage.size[1]){
                         if(!attData.scaleX){
