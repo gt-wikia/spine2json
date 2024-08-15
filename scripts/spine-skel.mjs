@@ -74,7 +74,7 @@ SkeletonBinary.prototype = {
         let chars = '';
         let charCount = 0;
         for (let i = 0; i < byteCount;) {
-            let b = this.readByte();
+            let b = this.readByte() & 0xFF;
             switch (b >> 4) {
                 case 12:
                 case 13:
@@ -293,7 +293,7 @@ SkeletonBinary.prototype = {
                 if (path === null){
                     path = name;
                 }
-                att.name = path;
+                att.path = path;
                 att.color = this.readColor();
                 n = this.readInt(true);
                 att.uvs = this.readFloatArray(n << 1, 1);
