@@ -34,7 +34,7 @@ Atlas.prototype.parse = (data) => {
             case 1: // page option or new data block
                 if (line.includes(':')) {
                     let [optName, optVal] = line.split(':')
-                    page[optName.trim()] = optVal.split(',').map(x => x.trim())
+                    page[optName.trim()] = optVal.split(',').map(x => parseType(x.trim()))
                 } else {
                     pageData = {
                         name: line.trim(),
@@ -47,7 +47,7 @@ Atlas.prototype.parse = (data) => {
             case 2: // data block option or new data block
                 if (line.includes(':')) {
                     let [optName, optVal] = line.split(':')
-                    pageData[optName.trim()] = optVal.split(',').map(x => x.trim())
+                    pageData[optName.trim()] = optVal.split(',').map(x => parseType(x.trim()))
                 } else {
                     page.data.push(pageData);
                     pageData = {
@@ -58,6 +58,17 @@ Atlas.prototype.parse = (data) => {
                 break;
         }
     }
+
+	function parseType(x) {
+		const types = {
+			true: true,
+			false: false,
+			[Number(x)]: Number(x)
+		};
+
+		if (types[x] === undefined) return x;
+		return types[x];
+	}
 
     return pages;
 };
