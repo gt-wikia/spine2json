@@ -40,7 +40,7 @@ scaleY = scaleY * (height / atlas.sprite.height);
 ```
 
 ## API
-Detailed documentation on `spine2json`'s API can be found inside [/docs/API.md](https://github.com/seiya-dev/spine2json/tree/main/scripts).
+Detailed documentation on `spine2json`'s API can be found inside [/docs/API.md](/docs/API.md).
 
 ## CLI
 CLI scripts can automate the processing of a skeleton, all the way from a *Unity asset* into a *usable animation video* of the live illustration.
