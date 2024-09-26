@@ -30,7 +30,7 @@ copy "%_WORK_DIR%\_temp\TextAsset\%_input_file%.atlas.txt"     "%_WORK_DIR%\%_in
 copy "%_WORK_DIR%\_temp\Texture2D\%_input_file%.rgba4444.png"  "%_WORK_DIR%\%_input_file%.png"   > nul
 copy "%_WORK_DIR%\_temp\Texture2D\%_input_file%.png"           "%_WORK_DIR%\%_input_file%.png"   > nul
 if "%_EXTBG%" == "1" ^
-copy "%_WORK_DIR%\_temp\Texture2D\bg_%_input:illust_=%.png"    "%_WORK_DIR%\"                    > nul  
+copy "%_WORK_DIR%\_temp\Texture2D\bg_%_input:illust_=%.png"    "%_WORK_DIR%\"                    > nul
 rmdir /S /Q "%_WORK_DIR%\_temp\"
 
 set _atlas_illust=%_WORK_DIR%/%_input_file%.atlas

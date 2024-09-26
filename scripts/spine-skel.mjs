@@ -274,7 +274,7 @@ SkeletonBinary.prototype = {
                 att.width = this.readFloat() * this.scale;
                 att.height = this.readFloat() * this.scale;
                 att.color = this.readColor();
-                let findImage = this.atlas[0].data.find(v => {
+                let findImage = this.atlas[0].regions.find(v => {
                     return v.name == att.path;
                 });
                 if(att.width != findImage.size[0] || att.height != findImage.size[1]){

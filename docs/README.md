@@ -53,7 +53,7 @@ Before running batch scripts, edit the `batconfigs.bat` file and ensure the path
 
 ### Syntax
 > [!TIP]
-> `asset` is the asset file name, and `model` is the name of the actual model inside the `asset`.*
+> `asset` is the asset file name, and `model` is the name of the actual model inside the `asset`.
 
 The overall process is divided between 4 scripts:
 1. [`skel-src.bat`](/skel-src.bat): Extract skeleton `.skel`, atlas `.atlas` and texture `.png` from the Unity asset

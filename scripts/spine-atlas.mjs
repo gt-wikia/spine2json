@@ -3,15 +3,15 @@ function Atlas() {};
 Atlas.prototype.parse = (data) => {
     const pages = [];
     let page = {};
-    let pageData = null;
+    let regions = null;
     let state = 0;
 
     for (const line of data.split('\n')) {
         if (line.trim().length === 0) {
             if (state > 0) {
-                if (pageData) {
-                    page.data.push(pageData);
-                    pageData = null;
+                if (regions) {
+                    page.regions.push(regions);
+                    regions = null;
                 }
 
                 pages.push(page);
@@ -27,16 +27,16 @@ Atlas.prototype.parse = (data) => {
                 state = 1;
                 page = {
                     file: line.trim(),
-                    data: [],
+                    regions: [],
                 };
 
                 break;
-            case 1: // page option or new data block
+            case 1: // page option or new regions block
                 if (line.includes(':')) {
                     let [optName, optVal] = line.split(':')
                     page[optName.trim()] = optVal.split(',').map(x => parseType(x.trim()))
                 } else {
-                    pageData = {
+                    regions = {
                         name: line.trim(),
                     };
 
@@ -44,13 +44,13 @@ Atlas.prototype.parse = (data) => {
                 }
 
                 break;
-            case 2: // data block option or new data block
+            case 2: // region block option or new regions block
                 if (line.includes(':')) {
                     let [optName, optVal] = line.split(':')
-                    pageData[optName.trim()] = optVal.split(',').map(x => parseType(x.trim()))
+                    regions[optName.trim()] = optVal.split(',').map(x => parseType(x.trim()))
                 } else {
-                    page.data.push(pageData);
-                    pageData = {
+                    page.regions.push(regions);
+                    regions = {
                         name: line.trim(),
                     };
                 }
@@ -79,7 +79,7 @@ Atlas.prototype.stringify = (pages) => {
 	for (const page of pages) {
 		// default property preset
 		// used to retain correct prop ordering, and filtering newly added props
-		const optNames = ['file', 'size', 'format', 'filter', 'repeat', 'data'];
+		const optNames = ['file', 'size', 'format', 'filter', 'repeat', 'regions'];
 		const allOpts = Object.keys(page);
 		const newOpts = allOpts.filter(opt => !optNames.includes(opt));
 
@@ -99,18 +99,18 @@ Atlas.prototype.stringify = (pages) => {
 		};
 
 		// stringify spritesheet
-		let pageData = '';
-		for (const sprite of page.data) {
+		let regions = '';
+		for (const sprite of page.regions) {
 			for (const optName of Object.keys(sprite)) {
 				if (optName === 'name') {
-					pageData += `${sprite[optName]}\n`;
+					regions += `${sprite[optName]}\n`;
 					continue;
 				}
-				pageData += `  ${optName}: ${sprite[optName]}\n`;
+				regions += `  ${optName}: ${sprite[optName]}\n`;
 			}
 		};
 
-		data += pageData;
+		data += regions;
 	}
 
 	return data;
