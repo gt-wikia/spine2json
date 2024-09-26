@@ -54,3 +54,12 @@ const atlasJson = atlas.parse(atlasTxt);
 
 const skelJson = skel2json(skelBin, atlasJson, 1);
 ```
+
+### [`spine-json.mjs`](./spine-json.mjs)
+> [!NOTE]
+> This is a legacy module with basic functionality, that was used to check the accuracy of the final parsed json when comparing it against the json exported from Spine. The module was later integrated into [`spine-skel.mjs`](#spine-skelmjs).
+
+```js
+// importing
+import { json2patch } from './scripts/spine-json.mjs';
+```
