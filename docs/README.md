@@ -11,13 +11,14 @@
 * [FFmpeg](https://www.gyan.dev/ffmpeg/builds/#release-builds)
 * [AviSynth+](https://avs-plus.net/get_started.html) (optional)
 
-***Note:*** Spine `v3.8.87` or higher is recommended as it resolves most bugs and version incompatibilities.
+> [!NOTE]
+> Spine `v3.8.87` or higher is recommended as it resolves most bugs and version incompatibilities. For full list, see [#9](/../../issues/9).
 
 ## Contribution
 To start developing on more up-to-date runtimes, you can [fork](/../../fork) this repository, or create a new branch for higher version via [pull request](/../../pulls).
 
 ## Quoting the Main Issue
-There are certain discrepancies between the internals of [Spine program](https://esotericsoftware.com/) itself, and the [Spine-Unity plugin](https://en.esotericsoftware.com/spine-unity) that is integrated inside Unity-based games. The problem becomes apparent when some attachments are wrongly scaled upon importing `skel` data directly into the former.
+There are certain discrepancies between the internal architecture of [Spine program](https://esotericsoftware.com/) itself, and the [Spine-Unity plugin](https://en.esotericsoftware.com/spine-unity) that is integrated inside Unity-based games. The problem becomes apparent when some attachments are wrongly scaled upon importing `skel` data directly into the *former*.
 1. ***Spine program*** (Java) and ***Spine-Unity plugin*** (C#) use comparatively different algorithm to read and render `skel` data.
 2. `Nonessential data` (i.e. a skel export option) includes scaling for attachments that were resized in Spine program during development.
 3. Nonessential data is read by Spine program when importing, to detect the size of rescaled attachments. However, this data isn't required in Spine-Unity plugin and other in-game runtimes. ![Verbatim: Nonessential data — Exports data not needed at runtime but required to use Import Data](/docs/nonessential_data.png)
@@ -28,7 +29,7 @@ There are certain discrepancies between the internals of [Spine program](https:/
 In fact, this is a common occurrence in games using the Spine runtime. There is even a [discussion thread](https://en.esotericsoftware.com/forum/d/9066-workaround-for-missing-mesh-data/3) that is closely related to this issue.
 
 ## The Solution
-`spine2json` provides an elegant solution to this issue by reading original attachment dimensions from the `atlas` file, and using it as a reference for making corrections to the skeleton data accordingly.
+`spine2json` provides an elegant solution to this issue by reading original attachment dimensions from the `atlas` file, and using it as a reference for recalculating the `scale` values of the attachments accordingly.
 
 The algorithm is available in [/scripts/spine-json.mjs](/scripts/spine-json.mjs), and its pseudo-code goes like this:
 
@@ -51,7 +52,8 @@ Currently, only batch scripts (`.bat`), i.e. primarily for *Windows*, is being m
 Before running batch scripts, edit the `batconfigs.bat` file and ensure the paths and configurations match with your currently available setup.
 
 ### Syntax
-***Note**: `asset` is the asset file name, and `model` is the name of the actual model inside the `asset`.*
+> [!TIP]
+> `asset` is the asset file name, and `model` is the name of the actual model inside the `asset`.*
 
 The overall process is divided between 4 scripts:
 1. [`skel-src.bat`](/skel-src.bat): Extract skeleton `.skel`, atlas `.atlas` and texture `.png` from the Unity asset

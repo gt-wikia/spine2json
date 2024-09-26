@@ -1,5 +1,5 @@
 # `spine2json` API
-The `/scripts/` directory includes a handful of APIs that can be used either directly in CLI, or by importing as modules.
+The [`/scripts/`](/scripts/) directory includes a handful of APIs that can be used either directly in CLI, or by importing as modules.
 
 ## CLI Commands
 ### [`patch-atlas-json.mjs`](/scripts/patch-atlas-json.mjs)
