@@ -38,6 +38,33 @@ const atlasString = atlas.stringify(atlasJson);
 console.log(atlasString);
 ```
 
+```js
+// object structure of parsed atlas
+[
+  {
+    file: 'texture.png',
+    size: [ width, height ],
+    format: [ 'format' ],
+    filter: [ 'filter', 'filter' ],
+    repeat: [ 'repeat' ],
+    regions: [
+      {
+        name: 'sprite',
+        rotate: [ true|false | 90|180|270 ],
+        xy: [ x_coord, y_coord ],
+        size: [ width, height ],
+        orig: [ padded_width, padded_height ],
+        offset: [ left_pad, bottom_pad ],
+        index: [ index ]
+      },
+      // { ...: '...' },
+      // { ...: '...' }
+    ]
+  },
+  // { ...: '...' }
+]
+```
+
 ### [`spine-skel.mjs`](./spine-skel.mjs)
 ```js
 // importing
