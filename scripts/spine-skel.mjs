@@ -219,7 +219,7 @@ SkeletonBinary.prototype = {
             skin.bones.length = this.readInt(true);
             for (let i = 0, n = skin.bones.length; i < n; i++)
                 skin.bones[i] = skeletonData.bones[this.readInt(true)];
-            
+
             for (let i = 0, n = this.readInt(true); i < n; i++)
                 skin.constraints.push(skeletonData.ikConstraints[this.readInt(true)]);
             for (let i = 0, n = this.readInt(true); i < n; i++)
@@ -250,15 +250,15 @@ SkeletonBinary.prototype = {
         if(name === null){
             name = attachmentName;
         }
-        
+
         let path, n;
         let array;
-        
+
         const att = {
             path: name,
             type: AttachmentType[this.readByte()],
         };
-        
+
         switch (att.type) {
             case 'region':
                 path = this.readStringRef();
@@ -343,7 +343,7 @@ SkeletonBinary.prototype = {
     readAnimation: function(name){
         let input = this;
         let data = {};
-        
+
         // Slot timelines
         let slotCount = input.readInt(true);
         if(slotCount > 0){
@@ -352,11 +352,11 @@ SkeletonBinary.prototype = {
         for (let i = 0; i < slotCount; i++) {
             let slotName = input.readSlotName();
             data.slots[slotName] = {};
-            
+
             let timelineCount = input.readInt(true);
             for (let timelineIndex = 0; timelineIndex < timelineCount; timelineIndex++) {
                 let timelineType = SlotTimelineType[input.readByte()];
-                
+
                 let timelineName;
                 switch(timelineType){
                     case 'twoColor':
@@ -366,14 +366,14 @@ SkeletonBinary.prototype = {
                     default:
                         timelineName = timelineType;
                 }
-                
+
                 data.slots[slotName][timelineName] = [];
-                
+
                 let frameCount = input.readInt(true);
                 for (let frameIndex = 0; frameIndex < frameCount; frameIndex++) {
                     let frameData = {};
                     frameData.time = input.readFloat(4);
-                    
+
                     switch(timelineType){
                         case 'attachment':
                             frameData.name = input.readStringRef();
@@ -397,12 +397,12 @@ SkeletonBinary.prototype = {
                         default:
                             throw new Error('not implemented: animation slot unknown type!');
                     }
-                    
+
                     data.slots[slotName][timelineName].push(frameData);
                 }
             }
         }
-        
+
         let boneCount = input.readInt(true);
         if(boneCount > 0){
             data.bones = {};
@@ -410,17 +410,17 @@ SkeletonBinary.prototype = {
         for (let i = 0; i < boneCount; i++) {
             let boneName = input.readBoneName();
             data.bones[boneName] = {};
-            
+
             let timelineCount = input.readInt(true);
             for (let timelineIndex = 0; timelineIndex < timelineCount; timelineIndex++) {
                 let timelineType = BoneTimelineType[input.readByte()];
                 data.bones[boneName][timelineType] = [];
-                
+
                 let frameCount = input.readInt(true);
                 for (let frameIndex = 0; frameIndex < frameCount; frameIndex++) {
                     let frameData = {};
                     frameData.time = input.readFloat(4);
-                    
+
                     switch(timelineType){
                         case 'rotate':
                             frameData.angle = input.readFloat(4);
@@ -442,12 +442,12 @@ SkeletonBinary.prototype = {
                         default:
                             throw new Error('not implemented: animation slot unknown type!');
                     }
-                    
+
                     data.bones[boneName][timelineType].push(frameData);
                 }
             }
         }
-        
+
         let ikCount = input.readInt(true);
         if(ikCount > 0){
             data.ik = {};
@@ -455,7 +455,7 @@ SkeletonBinary.prototype = {
         for (let i = 0; i < ikCount; i++) {
             const ikName = input.readIKName();
             data.ik[ikName] = [];
-            
+
             const frameCount = input.readInt(true);
             for (let frameIndex = 0; frameIndex < frameCount; frameIndex++) {
                 let frameData = {};
@@ -465,16 +465,16 @@ SkeletonBinary.prototype = {
                 frameData.bendPositive = input.readByte() > 0 ? true : false;
                 frameData.compress = input.readBoolean();
                 frameData.stretch = input.readBoolean();
-                
+
                 if (frameIndex < frameCount - 1) {
                     let curveData = input.readCurve();
                     Object.assign(frameData, curveData);
                 }
-                
+
                 data.ik[ikName].push(frameData);
             }
         }
-        
+
         let transformCount = input.readInt(true);
         if(transformCount > 0){
             data.transform = {};
@@ -482,7 +482,7 @@ SkeletonBinary.prototype = {
         for (let i = 0; i < transformCount; i++) {
             const tfName = input.readTransformName();
             data.transform[tfName] = [];
-            
+
             const frameCount = input.readInt(true);
             for (let frameIndex = 0; frameIndex < frameCount; frameIndex++){
                 let frameData = {};
@@ -498,7 +498,7 @@ SkeletonBinary.prototype = {
                 data.transform[tfName].push(frameData);
             }
         }
-        
+
         let pathCount = input.readInt(true);
         if(pathCount > 0){
             data.path = {};
@@ -506,17 +506,17 @@ SkeletonBinary.prototype = {
         for (let i = 0; i < pathCount; i++) {
             let pathName = input.readPathName();
             data.path[pathName] = {};
-        
+
             let timelineCount = input.readInt(true);
             for (let timelineIndex = 0; timelineIndex < timelineCount; timelineIndex++) {
                 let timelineType = PathTimelineType[input.readByte()];
                 data.path[pathName][timelineType] = [];
-                
+
                 let frameCount = input.readInt(true);
                 for(let frameIndex = 0; frameIndex < frameCount; frameIndex++){
                     let frameData = {};
                     frameData.time = input.readFloat(4);
-                    
+
                     switch(timelineType){
                         case 'position':
                             frameData.position = input.readFloat();
@@ -531,17 +531,17 @@ SkeletonBinary.prototype = {
                         default:
                             throw new Error('not implemented: animation path unknown type!');
                     }
-                    
+
                     if(frameIndex < frameCount-1){
                         let curveData = input.readCurve();
                         Object.assign(frameData, curveData);
                     }
-                    
+
                     data.path[pathName][timelineType].push(frameData);
                 }
             }
         }
-        
+
         // deforms also skins
         let deformCount = input.readInt(true);
         if(deformCount > 0){
@@ -550,49 +550,46 @@ SkeletonBinary.prototype = {
         for (let i = 0; i < deformCount; i++) {
             let skinName = input.readSkinName();
             data.deform[skinName] = {};
-            
+
             let slotCount = input.readInt(true);
             for (let slotSeq = 0; slotSeq < slotCount; slotSeq++) {
                 let slotName = input.readSlotName();
                 data.deform[skinName][slotName] = {};
-                
+
                 let timelineCount = input.readInt(true);
                 for (let timelineIndex = 0; timelineIndex < timelineCount; timelineIndex++) {
                     let attachmentName = input.readStringRef();
                     data.deform[skinName][slotName][attachmentName] = [];
-                    
+
                     let frameCount = input.readInt(true);
                     for (let frameIndex = 0; frameIndex < frameCount; frameIndex++) {
                         let frameData = {};
                         frameData.time = input.readFloat(4);
-                        
+
                         let end = input.readInt(true);
-                        
+
                         if(end != 0){
                             let start = input.readInt(true);
                             frameData.offset = start;
                             frameData.vertices = [];
-                            
+
                             end += start;
                             for (let v = start; v < end; v++){
                                 frameData.vertices.push(input.readFloat() * input.scale);
                             }
                         }
-                        
+
                         if (frameIndex < frameCount - 1){
                             let curveData = input.readCurve();
                             Object.assign(frameData, curveData);
                         }
-                        
+
                         data.deform[skinName][slotName][attachmentName].push(frameData);
                     }
-                    
                 }
-                
             }
-            
         }
-        
+
         let draworderCount = input.readInt(true);
         if(draworderCount > 0){
             data.draworder = [];
@@ -610,13 +607,13 @@ SkeletonBinary.prototype = {
                 data.draworder.push(draworder);
             }
         }
-        
+
         let eventCount = input.readInt(true);
         if(eventCount > 0){
             data.events = {};
             throw new Error('not implemented: animation event');
         }
-        
+
         return data;
     },
     readCurve: function(){
@@ -656,7 +653,7 @@ SkeletonBinary.prototype = {
         // main
         let input = this;
         input.initJson();
-        
+
         // build skeleton
         let skeletonData = input.json.skeleton;
         skeletonData.hash = input.readString();
@@ -665,7 +662,7 @@ SkeletonBinary.prototype = {
         skeletonData.y = input.readFloat();
         skeletonData.width = input.readFloat();
         skeletonData.height = input.readFloat();
-        
+
         // extra
         input.nonessential = input.readBoolean();
         if (input.nonessential) {
@@ -673,17 +670,17 @@ SkeletonBinary.prototype = {
             skeletonData.images = input.readString();
             skeletonData.audio = input.readString();
         }
-        
+
         // init arrays
         let n = 0;
         let nn = 0;
-        
+
         // strings
         n = input.readInt(true);
         for (let i = 0; i < n; i++){
             input.strings.push(input.readString());
         }
-        
+
         // bones
         n = input.readInt(true);
         for (let i = 0; i < n; i++) {
@@ -705,7 +702,7 @@ SkeletonBinary.prototype = {
             }
             input.json.bones.push(data);
         }
-        
+
         // Slots
         n = input.readInt(true);
         if(n < 1){
@@ -721,7 +718,7 @@ SkeletonBinary.prototype = {
             data.blend = BlendMode[input.readInt(true)];
             input.json.slots.push(data);
         }
-        
+
         // ik constraints
         n = input.readInt(true);
         if(n < 1){
@@ -746,7 +743,7 @@ SkeletonBinary.prototype = {
             data.uniform = input.readBoolean();
             input.json.ik.push(data);
         }
-        
+
         // transform constraints
         n = input.readInt(true);
         if(n < 1){
@@ -777,7 +774,7 @@ SkeletonBinary.prototype = {
             data.shearMix = input.readFloat();
             input.json.transform.push(data);
         }
-        
+
         // path constraints.
         n = input.readInt(true);
         if(n < 1){
@@ -810,13 +807,13 @@ SkeletonBinary.prototype = {
             data.translateMix = input.readFloat();
             input.json.path.push(data);
         }
-        
+
         // default skin
         let defaultSkin = input.readSkin(true);
         if (defaultSkin !== null) {
             input.json.skins.push(defaultSkin);
         }
-        
+
         // non-default skins
         let skinsCount = input.readInt(true);
         if(skinsCount < 1 && defaultSkin === null){
@@ -825,7 +822,7 @@ SkeletonBinary.prototype = {
         for (let i = 0; i < skinsCount; i++) {
             throw new Error('not implemented: non default skin!');
         }
-        
+
         let eventCount = input.readInt(true);
         if(eventCount < 1){
             input.json.events = undefined;
@@ -833,7 +830,7 @@ SkeletonBinary.prototype = {
         for (let i = 0; i < eventCount; i++) {
             throw new Error('not implemented: events');
         }
-        
+
         let animationCount = input.readInt(true);
         if(animationCount > 0){
             input.json.animations = {};
@@ -843,7 +840,6 @@ SkeletonBinary.prototype = {
                 input.json.animations[animationName] = animationData;
             }
         }
-        
     },
 };
 

@@ -1,19 +1,19 @@
 const json2patch = (buffer, data, atlas) => {
     const skelBin = new SkeletonBinary(buffer, atlas, 1);
     skelBin.buildJson();
-    
+
     let input = JSON.parse(data);
     atlas = atlas[0];
-    
+
     // revert back to original skeleton data from skel
     input.skeleton = skelBin.json.skeleton;
-    
+
     // remove spine version from json
     if(input.skeleton.spine == '3.8.87'){
         console.log(`LOG: Spine version removed from data`);
         delete input.skeleton.spine;
     }
-    
+
     // patch  attachment
     for(let s in input.skins){
         let atts = input.skins[s].attachments;

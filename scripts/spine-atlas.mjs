@@ -59,61 +59,61 @@ Atlas.prototype.parse = (data) => {
         }
     }
 
-	function parseType(x) {
-		const types = {
-			true: true,
-			false: false,
-			[Number(x)]: Number(x)
-		};
+    function parseType(x) {
+        const types = {
+            true: true,
+            false: false,
+            [Number(x)]: Number(x)
+        };
 
-		if (types[x] === undefined) return x;
-		return types[x];
-	}
+        if (types[x] === undefined) return x;
+        return types[x];
+    }
 
     return pages;
 };
 
 Atlas.prototype.stringify = (pages) => {
-	let data = '';
+    let data = '';
 
-	for (const page of pages) {
-		// default property preset
-		// used to retain correct prop ordering, and filtering newly added props
-		const optNames = ['texture', 'size', 'format', 'filter', 'repeat', 'regions'];
-		const allOpts = Object.keys(page);
-		const newOpts = allOpts.filter(opt => !optNames.includes(opt));
+    for (const page of pages) {
+        // default property preset
+        // used to retain correct prop ordering, and filtering newly added props
+        const optNames = ['texture', 'size', 'format', 'filter', 'repeat', 'regions'];
+        const allOpts = Object.keys(page);
+        const newOpts = allOpts.filter(opt => !optNames.includes(opt));
 
-		// exclude specials from iteration
-		optNames.shift();
-		optNames.pop();
+        // exclude specials from iteration
+        optNames.shift();
+        optNames.pop();
 
-		// append newly added options
-		for (const opt of newOpts) {
-			optNames.push(opt);
-		}
+        // append newly added options
+        for (const opt of newOpts) {
+            optNames.push(opt);
+        }
 
-		// stringify metadata
-		data += `\n${page.texture}\n`;
-		for (const opt of optNames) {
-			data += `${opt}: ${page[opt]}\n`;
-		};
+        // stringify metadata
+        data += `\n${page.texture}\n`;
+        for (const opt of optNames) {
+            data += `${opt}: ${page[opt]}\n`;
+        };
 
-		// stringify spritesheet
-		let regions = '';
-		for (const sprite of page.regions) {
-			for (const optName of Object.keys(sprite)) {
-				if (optName === 'name') {
-					regions += `${sprite[optName]}\n`;
-					continue;
-				}
-				regions += `  ${optName}: ${sprite[optName]}\n`;
-			}
-		};
+        // stringify spritesheet
+        let regions = '';
+        for (const sprite of page.regions) {
+            for (const optName of Object.keys(sprite)) {
+                if (optName === 'name') {
+                    regions += `${sprite[optName]}\n`;
+                    continue;
+                }
+                regions += `  ${optName}: ${sprite[optName]}\n`;
+            }
+        };
 
-		data += regions;
-	}
+        data += regions;
+    }
 
-	return data;
+    return data;
 }
 
 const atlas = new Atlas();

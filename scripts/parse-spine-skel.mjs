@@ -28,17 +28,17 @@ if(args.length !== 3) {
 try{
     const fileName = args[2];
     console.log('LOG: Input file:', filePrefix + fileName);
-    
+
     const skelBin  = fs.readFileSync(filePrefix + fileName + '.skel');
     const atlasTxt = fs.readFileSync(filePrefix + fileName + '.atlas', 'utf8');
-    
+
     const atlasJson = atlas.parse(atlasTxt);
     const skelJson = skel2json(skelBin, atlasJson, 1);
-    
+
     if(process.env._TSPINE == 1){
         skelJson.skeleton.images = `./images_${process.env._input}/`;
     }
-    
+
     fs.writeFileSync(filePrefix + fileName + '.s2j.json', JSON.stringify(skelJson, null, '\t'));
     console.log('LOG: DONE!');
 }

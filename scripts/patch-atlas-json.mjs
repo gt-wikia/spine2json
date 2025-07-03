@@ -29,23 +29,21 @@ try{
     console.log('LOG: Input file:', filePrefix + fileName);
     const atlasTxt = fs.readFileSync(filePrefix + fileName + '.atlas', 'utf8');
     const atlasData = atlas.parse(atlasTxt);
-    
+
     if(atlasData.length > 0){
-		for (const atlasPage of atlasData) {
-			atlasPage.pma = true;
-		}
-		
-		const atlasPagePMA = atlas.stringify(atlasData);
-        
+        for (const atlasPage of atlasData) {
+            atlasPage.pma = true;
+        }
+
+        const atlasPagePMA = atlas.stringify(atlasData);
+
         fs.writeFileSync(filePrefix + fileName + '.pma.atlas', atlasPagePMA);
-        
+
         console.log('LOG: DONE!');
     }
     else{
         console.log('LOG: WRONG INPUT!');
     }
-    
-    
 }
 catch(e){
     console.log('LOG: Failed!');
