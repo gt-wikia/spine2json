@@ -26,7 +26,7 @@ Atlas.prototype.parse = (data) => {
             case 0: // new page
                 state = 1;
                 page = {
-                    file: line.trim(),
+                    texture: line.trim(),
                     regions: [],
                 };
 
@@ -79,7 +79,7 @@ Atlas.prototype.stringify = (pages) => {
 	for (const page of pages) {
 		// default property preset
 		// used to retain correct prop ordering, and filtering newly added props
-		const optNames = ['file', 'size', 'format', 'filter', 'repeat', 'regions'];
+		const optNames = ['texture', 'size', 'format', 'filter', 'repeat', 'regions'];
 		const allOpts = Object.keys(page);
 		const newOpts = allOpts.filter(opt => !optNames.includes(opt));
 
@@ -93,7 +93,7 @@ Atlas.prototype.stringify = (pages) => {
 		}
 
 		// stringify metadata
-		data += `\n${page.file}\n`;
+		data += `\n${page.texture}\n`;
 		for (const opt of optNames) {
 			data += `${opt}: ${page[opt]}\n`;
 		};

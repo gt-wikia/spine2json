@@ -42,7 +42,7 @@ console.log(atlasString);
 // object structure of parsed atlas
 [
   {
-    file: 'texture.png',
+    texture: 'texture.png',
     size: [ width, height ],
     format: [ 'format' ],
     filter: [ 'filter', 'filter' ],
@@ -57,11 +57,10 @@ console.log(atlasString);
         offset: [ left_pad, bottom_pad ],
         index: [ index ]
       },
-      // { ...: '...' },
-      // { ...: '...' }
+      // { more regions },
     ]
   },
-  // { ...: '...' }
+  // { more pages },
 ]
 ```
 
