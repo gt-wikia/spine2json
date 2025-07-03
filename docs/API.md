@@ -24,7 +24,7 @@ $ node scripts/parse-spine-skel.js assets/admiral/illust_admiral.skel
 ### [`spine-atlas.js`](../scripts/spine-atlas.js)
 ```js
 // importing
-import { atlas } from 'spine2json/spine-atlas.js';
+import { atlas } from 'spine2json/spine-atlas';
 ```
 
 ```js
@@ -73,7 +73,7 @@ console.log(atlasString);
 ### [`spine-skel.js`](../scripts/spine-skel.js)
 ```js
 // importing
-import { skel2json } from 'spine2json/spine-skel.js';
+import { skel2json } from 'spine2json/spine-skel';
 ```
 
 ```js
@@ -93,5 +93,5 @@ const skelJson = skel2json(skelBin, atlasJson, 1);
 
 ```js
 // importing
-import { json2patch } from 'spine2json/spine-json.js';
+import { json2patch } from 'spine2json/spine-json';
 ```

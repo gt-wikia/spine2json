@@ -33,8 +33,8 @@ Atlas.prototype.parse = (data) => {
                 break;
             case 1: // page option or new regions block
                 if (line.includes(':')) {
-                    let [optName, optVal] = line.split(':')
-                    page[optName.trim()] = optVal.split(',').map(x => parseType(x.trim()))
+                    let [optName, optVal] = line.split(':');
+                    page[optName.trim()] = optVal.split(',').map(x => parseType(x.trim()));
                 } else {
                     regions = {
                         name: line.trim(),
@@ -46,8 +46,8 @@ Atlas.prototype.parse = (data) => {
                 break;
             case 2: // region block option or new regions block
                 if (line.includes(':')) {
-                    let [optName, optVal] = line.split(':')
-                    regions[optName.trim()] = optVal.split(',').map(x => parseType(x.trim()))
+                    let [optName, optVal] = line.split(':');
+                    regions[optName.trim()] = optVal.split(',').map(x => parseType(x.trim()));
                 } else {
                     page.regions.push(regions);
                     regions = {
@@ -108,7 +108,7 @@ Atlas.prototype.stringify = (pages) => {
                 }
                 regions += `  ${optName}: ${sprite[optName]}\n`;
             }
-        };
+        }
 
         data += regions;
     }
