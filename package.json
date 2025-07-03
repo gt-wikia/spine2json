@@ -1,0 +1,9 @@
+{
+	"name": "spine2json",
+	"type": "module",
+	"exports": {
+		"./spine-atlas": "./scripts/spine-atlas.js",
+		"./spine-json": "./scripts/spine-json.js",
+		"./spine-skel": "./scripts/spine-skel.js"
+	}
+}

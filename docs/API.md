@@ -1,24 +1,30 @@
 # `spine2json` API
-The [`/scripts/`](/scripts/) directory includes a handful of APIs that can be used either directly in CLI, or by importing as modules.
+The [`/scripts/`](../scripts/) directory includes a handful of APIs that can be used either directly via CLI as a standalone tool, or by importing `spine2json` as a package.
 
 ## CLI Commands
-### [`patch-atlas-json.mjs`](/scripts/patch-atlas-json.mjs)
+### [`patch-atlas-json.js`](../scripts/patch-atlas-json.js)
 Parses the provided `.atlas` file, pushes `pma: true` into the atlas' attributes, and saves it as `.pma.atlas`
 ```bash
-$ node scripts/patch-atlas-json.mjs assets/admiral/illust_admiral.atlas
+$ node scripts/patch-atlas-json.js assets/admiral/illust_admiral.atlas
 ```
 
-### [`parse-spine-skel.mjs`](/scripts/parse-spine-skel.mjs)
+### [`parse-spine-skel.js`](../scripts/parse-spine-skel.js)
 Fixes scaling errors of provided `.skel` file, converts into json, and saves it as `.s2j.json`
 ```bash
-$ node scripts/parse-spine-skel.mjs assets/admiral/illust_admiral.skel
+$ node scripts/parse-spine-skel.js assets/admiral/illust_admiral.skel
 ```
 
 ## JS Modules
-### [`spine-atlas.mjs`](./spine-atlas.mjs)
+> [!TIP]
+> The modules can be installed as a package via `npm`:
+> ```shell
+> npm install github:gt-wikia/spine2json
+> ```
+
+### [`spine-atlas.js`](../scripts/spine-atlas.js)
 ```js
 // importing
-import { atlas } from './scripts/spine-atlas.mjs';
+import { atlas } from 'spine2json/spine-atlas.js';
 ```
 
 ```js
@@ -64,10 +70,10 @@ console.log(atlasString);
 ]
 ```
 
-### [`spine-skel.mjs`](./spine-skel.mjs)
+### [`spine-skel.js`](../scripts/spine-skel.js)
 ```js
 // importing
-import { skel2json } from './scripts/spine-skel.mjs';
+import { skel2json } from 'spine2json/spine-skel.js';
 ```
 
 ```js
@@ -81,11 +87,11 @@ const atlasJson = atlas.parse(atlasTxt);
 const skelJson = skel2json(skelBin, atlasJson, 1);
 ```
 
-### [`spine-json.mjs`](./spine-json.mjs)
+### [`spine-json.js`](../scripts/spine-json.js)
 > [!NOTE]
-> This is a legacy module with basic functionality, that was used to check the accuracy of the final parsed json when comparing it against the json exported from Spine. The module was later integrated into [`spine-skel.mjs`](#spine-skelmjs).
+> This is a legacy module with basic functionality, that was used to check the accuracy of the final parsed json when comparing it against the json exported from Spine. The module was later integrated into [`spine-skel.js`](#spine-skeljs).
 
 ```js
 // importing
-import { json2patch } from './scripts/spine-json.mjs';
+import { json2patch } from 'spine2json/spine-json.js';
 ```

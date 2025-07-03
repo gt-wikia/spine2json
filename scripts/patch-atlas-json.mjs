@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-import { atlas } from './spine-atlas.mjs';
+import { atlas } from './spine-atlas.js';
 
 const args = process.argv;
 const argc = args.length === 3 ? true : false;

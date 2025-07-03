@@ -1,7 +1,7 @@
 import fs from 'fs';
 
-import { skel2json } from './spine-skel.mjs';
-import { atlas } from './spine-atlas.mjs';
+import { skel2json } from './spine-skel.js';
+import { atlas } from './spine-atlas.js';
 
 const args = process.argv;
 const argc = args.length === 3 ? true : false;

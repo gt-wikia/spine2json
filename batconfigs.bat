@@ -11,9 +11,9 @@ set _SCFG_FRAMES=./configs/spine-to-pngs.json
 set _SCFG_J2SKEL=./configs/spine-to-skel.json
 
 :: scripts
-set _PATCH_ATLAS=./scripts/patch-atlas-json.mjs
-set _PARSE_SKEL=./scripts/parse-spine-skel.mjs
-set _MAKE_FFMPEG=./scripts/make-enc.mjs
+set _PATCH_ATLAS=./scripts/patch-atlas-json.js
+set _PARSE_SKEL=./scripts/parse-spine-skel.js
+set _MAKE_FFMPEG=./scripts/make-enc.js
 
 :: working/playground directory
 :: defaults to assets folder
