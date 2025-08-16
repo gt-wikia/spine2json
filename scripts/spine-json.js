@@ -27,15 +27,15 @@ const json2patch = (buffer, data, atlas) => {
                     let findImage = atlas.regions.find(v => {
                         return v.name == attName;
                     });
-                    if(attData.width != findImage.size[0] || attData.height != findImage.size[1]){
+                    if(attData.width != findImage.orig[0] || attData.height != findImage.orig[1]){
                         if(!attData.scaleX){
                             attData.scaleX = 1;
                         }
                         if(!attData.scaleY){
                             attData.scaleY = 1;
                         }
-                        attData.scaleX = +(attData.scaleX * (attData.width  / findImage.size[0])).toFixed(4);
-                        attData.scaleY = +(attData.scaleY * (attData.height / findImage.size[1])).toFixed(4);
+                        attData.scaleX = +(attData.scaleX * (attData.width  / findImage.orig[0])).toFixed(4);
+                        attData.scaleY = +(attData.scaleY * (attData.height / findImage.orig[1])).toFixed(4);
                     }
                 }
             }
