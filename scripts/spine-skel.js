@@ -278,8 +278,8 @@ SkeletonBinary.prototype = {
                     return v.name == att.path;
                 });
                 if(att.width != findImage.size[0] || att.height != findImage.size[1]){
-                    att.scaleX = +(att.scaleX * (att.width  / findImage.size[0])).toFixed(4);
-                    att.scaleY = +(att.scaleY * (att.height / findImage.size[1])).toFixed(4);
+                    att.scaleX = +(att.scaleX * (att.width  / findImage.orig[0])).toFixed(4);
+                    att.scaleY = +(att.scaleY * (att.height / findImage.orig[1])).toFixed(4);
                 }
                 return att;
             case 'boundingbox':
